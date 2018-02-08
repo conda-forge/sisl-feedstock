@@ -12,23 +12,23 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 1
   skip:
-    - True  # [win]
     - True  # [not (py27 or py>34)]
 
 requirements:
   build:
     # We need the toolchain for gfortran compiler as well as libgfortran/gcc
     - toolchain
-    - libgfortran  # [linux]
-    - gcc
+    - libgfortran  # [not win]
+    - gcc  # [not win]
+    - msinttypes  # [win]
     - python
     - six  # [py27]
     - numpy 1.9.*
     - setuptools
   run:
-    - libgfortran  # [linux]
+    - libgfortran  # [not win]
     - python
     - six  # [py27]
     - numpy >=1.9
