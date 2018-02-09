@@ -23,6 +23,7 @@ requirements:
     - libgfortran  # [not win]
     - gcc  # [not win]
     - msinttypes  # [win]
+    - m2w64-toolchain  # [win]
     - python
     - numpy 1.9.*
     - setuptools
