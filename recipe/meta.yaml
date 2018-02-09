@@ -24,14 +24,13 @@ requirements:
     - gcc  # [not win]
     - msinttypes  # [win]
     - m2w64-toolchain  # [win]
-    - pthreads-win32  # [win]
     - python
     - numpy 1.9.*
     - setuptools
   run:
     - libgfortran  # [not win]
     - m2w64-gcc-libgfortran  # [win]
-    - pthreads-win32  # [win]
+    - m2w64-libwinpthread-git  # [win]
     - python
     - six  # [py27]
     - numpy >=1.9
