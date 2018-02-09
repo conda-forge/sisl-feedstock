@@ -29,6 +29,7 @@ requirements:
     - setuptools
   run:
     - libgfortran  # [not win]
+    - m2w64-gcc-libgfortran  # [win]
     - python
     - six  # [py27]
     - numpy >=1.9
