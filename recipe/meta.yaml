@@ -24,6 +24,8 @@ requirements:
     - gcc  # [not win]
     - msinttypes  # [win]
     - m2w64-toolchain  # [win]
+    - m2w64-gcc-libgfortran  # [win]
+    - m2w64-libwinpthread-git  # [win]
     - python
     - numpy 1.9.*
     - setuptools
