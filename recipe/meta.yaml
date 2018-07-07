@@ -12,24 +12,23 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 2
+  number: 3
   skip:
     - True  # [win]
 
 requirements:
+    build:
+    - {{ compiler('fortran') }}
+    - {{ compiler('c') }}
   build:
     # We need the toolchain for gfortran compiler as well as libgfortran/gcc
-    - toolchain
-    - libgfortran  # [not win]
-    - gcc  # [not win]
     - python
-    - numpy 1.9.*
+    - numpy
     - setuptools
   run:
-    - libgfortran  # [not win]
     - python
     - six  # [py27]
-    - numpy >=1.9
+    - {{ pin_compatible('numpy') }}
     - netcdf4
     - scipy
 
