@@ -19,7 +19,6 @@ requirements:
   build:
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
-  host:
     - python
     - six  # [py27]
     - numpy
