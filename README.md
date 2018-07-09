@@ -7,23 +7,25 @@ Package license: LGPL-3.0
 
 Feedstock license: BSD 3-Clause
 
-Summary: Tight-binding toolbox with interoperability with DFT codes for large-scale transmission calculations
+Summary: Python tight binding toolbox with interoperability with DFT codes for large-scale transmission calculations
 
 sisl is a simple, easy to use toolbox for creating tight-binding
-Hamiltonians and/or post-process DFT output.
+electronic/phononic structures and/or post-process DFT output.
 
 
 Current build status
 ====================
 
-Linux: [![Circle CI](https://circleci.com/gh/conda-forge/sisl-feedstock.svg?style=shield)](https://circleci.com/gh/conda-forge/sisl-feedstock)
-OSX: [![TravisCI](https://travis-ci.org/conda-forge/sisl-feedstock.svg?branch=master)](https://travis-ci.org/conda-forge/sisl-feedstock)
-Windows: ![](https://cdn.rawgit.com/conda-forge/conda-smithy/90845bba35bec53edac7a16638aa4d77217a3713/conda_smithy/static/disabled.svg)
+[![Linux](https://img.shields.io/circleci/project/github/conda-forge/sisl-feedstock/master.svg?label=Linux)](https://circleci.com/gh/conda-forge/sisl-feedstock)
+[![OSX](https://img.shields.io/travis/conda-forge/sisl-feedstock/master.svg?label=macOS)](https://travis-ci.org/conda-forge/sisl-feedstock)
+![Windows disabled](https://img.shields.io/badge/Windows-disabled-lightgrey.svg)
 
 Current release info
 ====================
-Version: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/sisl/badges/version.svg)](https://anaconda.org/conda-forge/sisl)
-Downloads: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/sisl/badges/downloads.svg)](https://anaconda.org/conda-forge/sisl)
+
+| Name | Downloads | Version | Platforms |
+| --- | --- | --- | --- |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-sisl-green.svg)](https://anaconda.org/conda-forge/sisl) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/sisl.svg)](https://anaconda.org/conda-forge/sisl) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/sisl.svg)](https://anaconda.org/conda-forge/sisl) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/sisl.svg)](https://anaconda.org/conda-forge/sisl) |
 
 Installing sisl
 ===============
