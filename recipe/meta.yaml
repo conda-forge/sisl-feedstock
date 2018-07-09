@@ -20,9 +20,8 @@ requirements:
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
   host:
-    - libgfortran-ng >=3.0  # [osx]
-    - libgfortran-ng >=4.9  # [linux]
     - python
+    - six  # [py27]
     - numpy
     - scipy
     - setuptools
