@@ -30,9 +30,9 @@ requirements:
     - libgfortran-ng >=4.9  # [linux]
     - python
     - six  # [py27]
-    - numpy
+    - {{ pin_compatible('numpy') }}
+    - {{ pin_compatible('scipy') }}
     - netcdf4
-    - scipy
 
 test:
   requires:
