@@ -13,21 +13,21 @@ source:
 
 build:
   number: 3
-  skip:
-    - True  # [win]
+  skip: true  # [win]
 
 requirements:
   build:
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
+  host:
     - python
     - numpy
+    - scipy
     - setuptools
-
   run:
     - python
     - six  # [py27]
-    - {{ pin_compatible('numpy') }}
+    - numpy
     - netcdf4
     - scipy
 
