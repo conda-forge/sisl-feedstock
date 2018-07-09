@@ -17,13 +17,13 @@ build:
     - True  # [win]
 
 requirements:
-    build:
+  build:
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
-  build:
     - python
     - numpy
     - setuptools
+
   run:
     - python
     - six  # [py27]
