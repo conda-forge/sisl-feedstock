@@ -58,6 +58,10 @@ conda clean --lock
 conda install --yes --quiet conda-forge-build-setup
 source run_conda_forge_build_setup
 
+
+conda build --check /recipe_root
+env
+cat /recipe_root/meta.yaml
 conda build /recipe_root || exit 1
 upload_or_check_non_existence /recipe_root conda-forge --channel=main || exit 1
 
