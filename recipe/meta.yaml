@@ -23,7 +23,7 @@ requirements:
     - python
     - six  # [py27]
     - numpy
-    - scipy
+    - scipy <1.1.0,>1.1.0
     - setuptools
   run:
     - libgfortran-ng >=3.0  # [osx]
