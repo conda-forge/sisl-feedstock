@@ -3,7 +3,7 @@
 {% set sha256 = "29f995077180dc43d30b6c55a2e933182912661d8ed8cfaf3f4c4ac40306fe91" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
@@ -12,26 +12,27 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 2
-  skip:
-    - True  # [win]
+  number: 3
+  skip: true  # [win]
 
 requirements:
   build:
-    # We need the toolchain for gfortran compiler as well as libgfortran/gcc
-    - toolchain
-    - libgfortran  # [not win]
-    - gcc  # [not win]
-    - python
-    - numpy 1.9.*
-    - setuptools
-  run:
-    - libgfortran  # [not win]
+    - {{ compiler('fortran') }}
+    - {{ compiler('c') }}
+  host:
     - python
     - six  # [py27]
-    - numpy >=1.9
+    - numpy
+    - scipy <=1.0.0
+    - setuptools
+  run:
+    - libgfortran-ng >=3.0  # [osx]
+    - libgfortran-ng >=4.9  # [linux]
+    - python
+    - six  # [py27]
+    - {{ pin_compatible('numpy') }}
+    - {{ pin_compatible('scipy', upper_bound='1.1.0') }}
     - netcdf4
-    - scipy
 
 test:
   requires:
@@ -42,10 +43,10 @@ about:
   license: LGPL-3.0
   license_family: LGPL
   license_file: LICENSE
-  summary: 'Tight-binding toolbox with interoperability with DFT codes for large-scale transmission calculations'
+  summary: 'Python tight binding toolbox with interoperability with DFT codes for large-scale transmission calculations'
   description: |
     sisl is a simple, easy to use toolbox for creating tight-binding
-    Hamiltonians and/or post-process DFT output.
+    electronic/phononic structures and/or post-process DFT output.
   doc_url: http://sisl.readthedocs.io/
   dev_url: https://github.com/zerothi/sisl
 
