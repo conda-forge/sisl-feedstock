@@ -31,7 +31,7 @@ requirements:
     - python
     - six  # [py27]
     - {{ pin_compatible('numpy') }}
-    - {{ pin_compatible('scipy') }}
+    - {{ pin_compatible('scipy', upper_bound='1.1.0') }}
     - netcdf4
 
 test:
