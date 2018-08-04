@@ -1,6 +1,4 @@
 #!/bin/sh
 
 # Test command:
-pytest --pyargs sisl
-
-exit 0
+pytest --pyargs sisl --ignore sisl/physics/tests/test_physics_sparse.py::test_eigsh_orthogonal
