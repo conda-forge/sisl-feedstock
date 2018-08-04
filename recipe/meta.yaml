@@ -22,7 +22,7 @@ requirements:
   host:
     - python
     - six  # [py27]
-    - numpy
+    - numpy >=1.10.0
     - scipy
     - setuptools
   run:
