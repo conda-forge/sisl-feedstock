@@ -10,6 +10,8 @@ source:
   fn: {{ name }}-{{ version }}.tar.gz
   url: https://github.com/zerothi/{{ name }}/archive/v{{ version }}.tar.gz
   sha256: {{ sha256 }}
+  patches:
+    - patch_scipy_eigsh_fail
 
 build:
   number: 0
@@ -22,6 +24,7 @@ requirements:
   host:
     - python
     - six  # [py27]
+    - pyparsing
     - numpy >=1.10.0
     - scipy
     - setuptools
@@ -30,7 +33,6 @@ requirements:
     - libgfortran-ng >=4.9  # [linux]
     - python
     - six  # [py27]
-    - pyparsing
     - {{ pin_compatible('numpy') }}
     - {{ pin_compatible('scipy') }}
     - netcdf4
