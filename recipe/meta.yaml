@@ -21,7 +21,7 @@ requirements:
     - {{ compiler('c') }}
   host:
     - python
-    - six  # [py27]
+    - six
     - numpy >=1.10.0
     - scipy
     - setuptools
@@ -29,7 +29,7 @@ requirements:
     - libgfortran-ng >=3.0  # [osx]
     - libgfortran-ng >=4.9  # [linux]
     - python
-    - six  # [py27]
+    - six
     - pyparsing
     - {{ pin_compatible('numpy') }}
     - {{ pin_compatible('scipy') }}
