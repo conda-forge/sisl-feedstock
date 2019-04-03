@@ -22,10 +22,13 @@ requirements:
     - libblas
     - libcblas
     - python
+    - setuptools
     - six
+    # once we hit 1.16.3 it should be fine again
     - numpy <=1.15.3
     - scipy >=0.18
-    - setuptools
+    - pyparsing
+    - netcdf4
   run:
     - python
     - six
