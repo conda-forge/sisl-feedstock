@@ -23,7 +23,7 @@ requirements:
     - libcblas
     - python
     - six
-    - numpy >=1.13
+    - numpy <=1.15.3
     - scipy >=0.18
     - setuptools
   run:
