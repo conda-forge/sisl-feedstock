@@ -23,12 +23,10 @@ requirements:
     - libcblas
     - python
     - six
-    - numpy >=1.13.0
-    - scipy
+    - numpy >=1.13
+    - scipy >=0.18
     - setuptools
   run:
-    - libgfortran-ng >=3.0  # [osx]
-    - libgfortran-ng >=4.9  # [linux]
     - python
     - six
     - pyparsing
