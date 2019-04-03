@@ -13,16 +13,17 @@ source:
 
 build:
   number: 1000
-  skip: true  # [win]
 
 requirements:
   build:
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
   host:
+    - libblas
+    - libcblas
     - python
     - six
-    - numpy >=1.10.0
+    - numpy >=1.13.0
     - scipy
     - setuptools
   run:
@@ -38,6 +39,9 @@ requirements:
 test:
   requires:
     - pytest
+  imports:
+    - sisl
+    - sisl.io
 
 about:
   home: http://github.com/zerothi/sisl

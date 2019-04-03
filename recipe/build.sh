@@ -9,7 +9,8 @@ export CPLUS_INCLUDE_PATH="${PREFIX}/include"
 # There are some issues in the linking on Py3 vs Py2
 # Hence we need to figure out the exact library name and link directly
 # to fix the f2py linking step.
-if [ $(uname) == "Darwin" ]; then
+if [ $(uname) == "xDarwin" ]; then
+    echo CHECK $(otool -L $PYTHON)
     python_lib=$(basename $(otool -L $PYTHON | grep 'libpython.*\.dylib' | tr '\t' ' ' | cut -d' ' -f2))
      #| sed -e 's/lib/-l/; s/\.dylib.*//')
     python_lib=${python_lib//libpython/-lpython}
