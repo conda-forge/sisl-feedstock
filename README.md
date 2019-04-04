@@ -7,24 +7,18 @@ Package license: LGPL-3.0
 
 Feedstock license: BSD 3-Clause
 
-Summary: Python tight binding toolbox with interoperability with DFT codes for large-scale transmission calculations
+Summary: Toolbox for electronic structure calculations and large scale transport
 
-sisl is a simple, easy to use toolbox for creating tight-binding
-electronic/phononic structures and/or post-process DFT output.
+sisl is a tool to manipulate density functional
+theory code input and/or output. It also implements tight-binding
+tools to create and manipulate multi-orbital (non)-orthogonal basis sets.
 
 
 Current build status
 ====================
 
 
-<table><tr>
-    <td>Appveyor</td>
-    <td>
-      <a href="https://ci.appveyor.com/project/conda-forge/sisl-feedstock/branch/master">
-        <img alt="windows" src="https://img.shields.io/appveyor/ci/conda-forge/sisl-feedstock/master.svg?label=Windows">
-      </a>
-    </td>
-  </tr>
+<table>
     
   <tr>
     <td>Azure</td>
@@ -163,52 +157,16 @@ Current build status
                   <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=osx&configuration=osx_blas_implopenblaspython3.7" alt="variant">
                 </a>
               </td>
-            </tr><tr>
-              <td>win_blas_implblisc_compilervs2015python3.6</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=win&configuration=win_blas_implblisc_compilervs2015python3.6" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>win_blas_implblisc_compilervs2015python3.7</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=win&configuration=win_blas_implblisc_compilervs2015python3.7" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>win_blas_implmklc_compilervs2015python3.6</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=win&configuration=win_blas_implmklc_compilervs2015python3.6" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>win_blas_implmklc_compilervs2015python3.7</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=win&configuration=win_blas_implmklc_compilervs2015python3.7" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>win_blas_implopenblasc_compilervs2015python3.6</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=win&configuration=win_blas_implopenblasc_compilervs2015python3.6" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>win_blas_implopenblasc_compilervs2015python3.7</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=win&configuration=win_blas_implopenblasc_compilervs2015python3.7" alt="variant">
-                </a>
-              </td>
             </tr>
           </tbody>
         </table>
       </details>
+    </td>
+  </tr>
+  <tr>
+    <td>Windows</td>
+    <td>
+      <img src="https://img.shields.io/badge/Windows-disabled-lightgrey.svg" alt="Windows disabled">
     </td>
   </tr>
 </table>
