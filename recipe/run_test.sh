@@ -1,4 +1,4 @@
 #!/bin/sh
 
 # Test command:
-pytest --pyargs sisl
+pytest --pyargs sisl -m 'not selector'

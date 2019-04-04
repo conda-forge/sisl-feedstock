@@ -20,8 +20,9 @@ requirements:
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
   host:
-    - libblas
+    - {{ blas_impl }}
     - libcblas
+    - liblapack
     - python
     - setuptools
     - six
@@ -31,6 +32,9 @@ requirements:
     - pyparsing
     - netcdf4
   run:
+    - libblas * *{{ blas_impl }}
+    - {{ blas_impl }}
+    - liblapack
     - python
     - six
     - pyparsing
