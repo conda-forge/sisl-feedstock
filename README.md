@@ -95,27 +95,6 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>osx_blas_implblispython2.7</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=osx&configuration=osx_blas_implblispython2.7" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_blas_implblispython3.6</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=osx&configuration=osx_blas_implblispython3.6" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_blas_implblispython3.7</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=osx&configuration=osx_blas_implblispython3.7" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
               <td>osx_blas_implmklpython2.7</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">

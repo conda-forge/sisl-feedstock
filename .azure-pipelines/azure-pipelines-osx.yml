@@ -10,15 +10,6 @@ jobs:
   strategy:
     maxParallel: 8
     matrix:
-      osx_blas_implblispython2.7:
-        CONFIG: osx_blas_implblispython2.7
-        UPLOAD_PACKAGES: True
-      osx_blas_implblispython3.6:
-        CONFIG: osx_blas_implblispython3.6
-        UPLOAD_PACKAGES: True
-      osx_blas_implblispython3.7:
-        CONFIG: osx_blas_implblispython3.7
-        UPLOAD_PACKAGES: True
       osx_blas_implmklpython2.7:
         CONFIG: osx_blas_implmklpython2.7
         UPLOAD_PACKAGES: True
