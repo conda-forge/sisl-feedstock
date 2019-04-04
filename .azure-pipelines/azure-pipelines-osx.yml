@@ -10,14 +10,32 @@ jobs:
   strategy:
     maxParallel: 8
     matrix:
-      osx_python2.7:
-        CONFIG: osx_python2.7
+      osx_blas_implblispython2.7:
+        CONFIG: osx_blas_implblispython2.7
         UPLOAD_PACKAGES: True
-      osx_python3.6:
-        CONFIG: osx_python3.6
+      osx_blas_implblispython3.6:
+        CONFIG: osx_blas_implblispython3.6
         UPLOAD_PACKAGES: True
-      osx_python3.7:
-        CONFIG: osx_python3.7
+      osx_blas_implblispython3.7:
+        CONFIG: osx_blas_implblispython3.7
+        UPLOAD_PACKAGES: True
+      osx_blas_implmklpython2.7:
+        CONFIG: osx_blas_implmklpython2.7
+        UPLOAD_PACKAGES: True
+      osx_blas_implmklpython3.6:
+        CONFIG: osx_blas_implmklpython3.6
+        UPLOAD_PACKAGES: True
+      osx_blas_implmklpython3.7:
+        CONFIG: osx_blas_implmklpython3.7
+        UPLOAD_PACKAGES: True
+      osx_blas_implopenblaspython2.7:
+        CONFIG: osx_blas_implopenblaspython2.7
+        UPLOAD_PACKAGES: True
+      osx_blas_implopenblaspython3.6:
+        CONFIG: osx_blas_implopenblaspython3.6
+        UPLOAD_PACKAGES: True
+      osx_blas_implopenblaspython3.7:
+        CONFIG: osx_blas_implopenblaspython3.7
         UPLOAD_PACKAGES: True
 
   steps:
