@@ -28,7 +28,7 @@ requirements:
     - six
     # once we hit 1.16.3 it should be fine again
     # I read that numpy-devel should work, so...
-    - numpy <=1.15.3,>=1.16.3
+    - numpy <=1.15.3
     - scipy >=0.18
     - pyparsing
     - netcdf4
