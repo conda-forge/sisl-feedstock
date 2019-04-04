@@ -7,18 +7,148 @@ Package license: LGPL-3.0
 
 Feedstock license: BSD 3-Clause
 
-Summary: Python tight binding toolbox with interoperability with DFT codes for large-scale transmission calculations
+Summary: Toolbox for electronic structure calculations and large scale transport
 
-sisl is a simple, easy to use toolbox for creating tight-binding
-electronic/phononic structures and/or post-process DFT output.
+sisl is a tool to manipulate density functional
+theory code input and/or output. It also implements tight-binding
+tools to create and manipulate multi-orbital (non)-orthogonal basis sets.
 
 
 Current build status
 ====================
 
-[![Linux](https://img.shields.io/circleci/project/github/conda-forge/sisl-feedstock/master.svg?label=Linux)](https://circleci.com/gh/conda-forge/sisl-feedstock)
-[![OSX](https://img.shields.io/travis/conda-forge/sisl-feedstock/master.svg?label=macOS)](https://travis-ci.org/conda-forge/sisl-feedstock)
-![Windows disabled](https://img.shields.io/badge/Windows-disabled-lightgrey.svg)
+
+<table>
+    
+  <tr>
+    <td>Azure</td>
+    <td>
+      <details>
+        <summary>
+          <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
+            <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master">
+          </a>
+        </summary>
+        <table>
+          <thead><tr><th>Variant</th><th>Status</th></tr></thead>
+          <tbody><tr>
+              <td>linux_blas_implblispython2.7</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=linux&configuration=linux_blas_implblispython2.7" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_blas_implblispython3.6</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=linux&configuration=linux_blas_implblispython3.6" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_blas_implblispython3.7</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=linux&configuration=linux_blas_implblispython3.7" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_blas_implmklpython2.7</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=linux&configuration=linux_blas_implmklpython2.7" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_blas_implmklpython3.6</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=linux&configuration=linux_blas_implmklpython3.6" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_blas_implmklpython3.7</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=linux&configuration=linux_blas_implmklpython3.7" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_blas_implopenblaspython2.7</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=linux&configuration=linux_blas_implopenblaspython2.7" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_blas_implopenblaspython3.6</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=linux&configuration=linux_blas_implopenblaspython3.6" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_blas_implopenblaspython3.7</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=linux&configuration=linux_blas_implopenblaspython3.7" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_blas_implmklpython2.7</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=osx&configuration=osx_blas_implmklpython2.7" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_blas_implmklpython3.6</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=osx&configuration=osx_blas_implmklpython3.6" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_blas_implmklpython3.7</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=osx&configuration=osx_blas_implmklpython3.7" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_blas_implopenblaspython2.7</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=osx&configuration=osx_blas_implopenblaspython2.7" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_blas_implopenblaspython3.6</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=osx&configuration=osx_blas_implopenblaspython3.6" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_blas_implopenblaspython3.7</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=5826&branchName=master">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/sisl-feedstock?branchName=master&jobName=osx&configuration=osx_blas_implopenblaspython3.7" alt="variant">
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </details>
+    </td>
+  </tr>
+  <tr>
+    <td>Windows</td>
+    <td>
+      <img src="https://img.shields.io/badge/Windows-disabled-lightgrey.svg" alt="Windows disabled">
+    </td>
+  </tr>
+</table>
 
 Current release info
 ====================
@@ -51,6 +181,8 @@ conda search sisl --channel conda-forge
 
 About conda-forge
 =================
+
+[![Powered by NumFOCUS](https://img.shields.io/badge/powered%20by-NumFOCUS-orange.svg?style=flat&colorA=E1523D&colorB=007D8A)](http://numfocus.org)
 
 conda-forge is a community-led conda channel of installable packages.
 In order to provide high-quality builds, the process has been automated into the
@@ -106,3 +238,9 @@ In order to produce a uniquely identifiable distribution:
  * If the version of a package **is** being increased, please remember to return
    the [``build/number``](https://conda.io/docs/user-guide/tasks/build-packages/define-metadata.html#build-number-and-string)
    back to 0.
+
+Feedstock Maintainers
+=====================
+
+* [@zerothi](https://github.com/zerothi/)
+
