@@ -12,8 +12,8 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 1001
-  skip: true  # [win and py2k]
+  number: 1002
+  skip: true  # [win]
 
 requirements:
   build:
@@ -27,7 +27,8 @@ requirements:
     - setuptools
     - six
     # once we hit 1.16.3 it should be fine again
-    - numpy <=1.15.3
+    # I read that numpy-devel should work, so...
+    - numpy <=1.15.3,>=1.16.3
     - scipy >=0.18
     - pyparsing
     - netcdf4
@@ -54,10 +55,11 @@ about:
   license: LGPL-3.0
   license_family: LGPL
   license_file: LICENSE
-  summary: 'Python tight binding toolbox with interoperability with DFT codes for large-scale transmission calculations'
+  summary: 'Toolbox for electronic structure calculations and large scale transport'
   description: |
-    sisl is a simple, easy to use toolbox for creating tight-binding
-    electronic/phononic structures and/or post-process DFT output.
+    sisl is a tool to manipulate density functional
+    theory code input and/or output. It also implements tight-binding
+    tools to create and manipulate multi-orbital (non)-orthogonal basis sets.
   doc_url: http://sisl.readthedocs.io/
   dev_url: https://github.com/zerothi/sisl
 
