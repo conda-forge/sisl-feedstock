@@ -1,6 +1,6 @@
 {% set name = "sisl" %}
-{% set version = "0.9.5" %}
-{% set sha256 = "ce740c2329415343ed3680164bd3bf9bd652d2284caaf6b12aa86eceb3e624bb" %}
+{% set version = "0.9.6" %}
+{% set sha256 = "2bf482294674686bd6c6402be37754401da1daf126bdaad164c1df34be5b5cfb" %}
 
 package:
   name: {{ name }}
@@ -12,7 +12,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 1002
+  number: 0
   skip: true  # [win]
   {% if blas_impl == 'blis' %}
   skip: true  # [osx]
