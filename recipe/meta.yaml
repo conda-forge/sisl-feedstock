@@ -14,16 +14,12 @@ source:
 build:
   number: 1
   skip: true  # [win]
-  {% if blas_impl == 'blis' %}
-  skip: true  # [osx]
-  {% endif %}
 
 requirements:
   build:
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
   host:
-    - {{ blas_impl }}
     - libcblas
     - liblapack
     - python
@@ -36,8 +32,6 @@ requirements:
     - pyparsing
     - netcdf4
   run:
-    - libblas * *{{ blas_impl }}
-    - {{ blas_impl }}
     - liblapack
     - python
     - six
