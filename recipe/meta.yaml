@@ -1,6 +1,6 @@
 {% set name = "sisl" %}
-{% set version = "0.9.8" %}
-{% set sha256 = "7873e251c1a3f33e80ed1b87043800e59614a5e09a1c5d7a19f2ce289524c946" %}
+{% set version = "0.10.0" %}
+{% set sha256 = "6c395c00aed4d3f7604adcd4bb0231053262ef7240e452e70b55b422e2467edb" %}
 
 package:
   name: {{ name }}
@@ -29,6 +29,8 @@ requirements:
     # I read that numpy-devel should work, so...
     - numpy <=1.15.3
     - scipy >=0.18
+    # For cythonizing stuff
+    - cython
     - pyparsing
     - netcdf4
   run:
@@ -48,16 +50,16 @@ test:
     - sisl.io
 
 about:
-  home: http://github.com/zerothi/sisl
-  license: LGPL-3.0
+  home: https://github.com/zerothi/sisl
+  license: LGPL-3.0-or-later
   license_family: LGPL
   license_file: LICENSE
-  summary: 'Toolbox for electronic structure calculations and large scale transport'
+  summary: Toolbox for electronic structure calculations and large scale transport
   description: |
     sisl is a tool to manipulate density functional
     theory code input and/or output. It also implements tight-binding
     tools to create and manipulate multi-orbital (non)-orthogonal basis sets.
-  doc_url: http://sisl.readthedocs.io/
+  doc_url: https://zerothi.github.io/sisl
   dev_url: https://github.com/zerothi/sisl
 
 extra:
