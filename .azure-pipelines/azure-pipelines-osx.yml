@@ -17,6 +17,9 @@ jobs:
       osx_64_fortran_compiler_version7python3.8.____cpython:
         CONFIG: osx_64_fortran_compiler_version7python3.8.____cpython
         UPLOAD_PACKAGES: 'True'
+      osx_64_fortran_compiler_version7python3.9.____cpython:
+        CONFIG: osx_64_fortran_compiler_version7python3.9.____cpython
+        UPLOAD_PACKAGES: 'True'
       osx_64_fortran_compiler_version9python3.6.____cpython:
         CONFIG: osx_64_fortran_compiler_version9python3.6.____cpython
         UPLOAD_PACKAGES: 'True'
@@ -25,6 +28,9 @@ jobs:
         UPLOAD_PACKAGES: 'True'
       osx_64_fortran_compiler_version9python3.8.____cpython:
         CONFIG: osx_64_fortran_compiler_version9python3.8.____cpython
+        UPLOAD_PACKAGES: 'True'
+      osx_64_fortran_compiler_version9python3.9.____cpython:
+        CONFIG: osx_64_fortran_compiler_version9python3.9.____cpython
         UPLOAD_PACKAGES: 'True'
   timeoutInMinutes: 360
 
