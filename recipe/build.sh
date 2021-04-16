@@ -9,5 +9,4 @@ if [[ "$unamestr" == 'Linux' ]]; then
     export LDFLAGS="$LDFLAGS -shared"
 fi
 
-$PYTHON setup.py build
-$PYTHON setup.py install
+$PYTHON setup.py install --single-version-externally-managed --record=record.txt
