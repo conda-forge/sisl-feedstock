@@ -26,7 +26,7 @@ requirements:
     - setuptools
     # once we hit 1.16.3 it should be fine again
     # I read that numpy-devel should work, so...
-    - numpy <=1.15.3|>=1.16.3
+    - numpy 1.11
     - scipy >=0.18
     # For cythonizing stuff
     - cython
@@ -37,7 +37,7 @@ requirements:
     - python
     - pyparsing
     - {{ pin_compatible('numpy') }}
-    - {{ pin_compatible('scipy') }}
+    - scipy
     - netcdf4
   run_constrained:
     - dill >=0.3.2
