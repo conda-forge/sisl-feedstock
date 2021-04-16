@@ -23,6 +23,7 @@ requirements:
     - libcblas
     - liblapack
     - python
+    - pip
     - setuptools
     # once we hit 1.16.3 it should be fine again
     # I read that numpy-devel should work, so...
