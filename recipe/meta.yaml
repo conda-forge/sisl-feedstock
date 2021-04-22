@@ -20,24 +20,25 @@ requirements:
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
   host:
+    - libblas
     - libcblas
     - liblapack
-    - python
+    - python {{ python }}
     - pip
+    - pytest
     - setuptools
     # once we hit 1.16.3 it should be fine again
     # I read that numpy-devel should work, so...
-    - numpy 1.13
-    - scipy >=0.18
+    - numpy {{ numpy }}
+    - scipy
     # For cythonizing stuff
     - cython
     - pyparsing
     - netcdf4
   run:
-    - liblapack
-    - python
+    - python >=3.6
     - pyparsing
-    - {{ pin_compatible('numpy') }}
+    - numpy
     - scipy
     - netcdf4
   run_constrained:
@@ -50,6 +51,7 @@ test:
   imports:
     - sisl
     - sisl.io
+    - sisl.io.siesta._siesta
 
 about:
   home: https://github.com/zerothi/sisl
