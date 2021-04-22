@@ -27,6 +27,8 @@ requirements:
     - python
     - cython
     - numpy >=1.13
+    - scipy >=0.18
+    - pyparsing >=1.5.7
   run:
     - python
     - pyparsing >=1.5.7
