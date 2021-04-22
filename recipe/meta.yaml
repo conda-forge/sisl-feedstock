@@ -28,6 +28,7 @@ requirements:
     - cython
     - numpy >=1.13
     - scipy >=0.18
+    - netcdf4
     - pyparsing >=1.5.7
   run:
     - python
