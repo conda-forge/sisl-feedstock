@@ -26,16 +26,12 @@ requirements:
     - liblapack
     - python
     - cython
-    - numpy 1.13
-    - scipy
-    - pyparsing
-    - pytest
-    - netcdf4
+    - numpy >=1.13
   run:
     - python
-    - pyparsing
+    - pyparsing >=1.5.7
     - {{ pin_compatible('numpy') }}
-    - scipy
+    - scipy >=0.18
     - tqdm
     - netcdf4
   run_constrained:
