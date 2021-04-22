@@ -33,7 +33,7 @@ requirements:
   run:
     - python
     - pyparsing >=1.5.7
-    - {{ pin_compatible('numpy') }}
+    - {{ pin_compatible('numpy', min_pin='x.x') }}
     - scipy >=0.18
     - tqdm
     - netcdf4
