@@ -10,9 +10,11 @@ source:
   fn: {{ name }}-{{ version }}.tar.gz
   url: https://github.com/zerothi/{{ name }}/archive/v{{ version }}.tar.gz
   sha256: {{ sha256 }}
+  patches:
+    - patches/random_failure_seed.patch
 
 build:
-  number: 1
+  number: 2
   skip: true  # [win]
 
 requirements:
@@ -20,24 +22,26 @@ requirements:
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
   host:
+    - setuptools
+    - libblas
     - libcblas
     - liblapack
     - python
-    - setuptools
-    # once we hit 1.16.3 it should be fine again
-    # I read that numpy-devel should work, so...
-    - numpy <=1.15.3|>=1.16.3
-    - scipy >=0.18
-    # For cythonizing stuff
     - cython
-    - pyparsing
+    # this is for the sisl requirement
+    - numpy >=1.13
+    # this is for conda-smithy so that the global
+    # pinning is correctly specified
+    - numpy
+    - scipy >=0.18
     - netcdf4
+    - pyparsing >=1.5.7
   run:
-    - liblapack
     - python
-    - pyparsing
+    - pyparsing >=1.5.7
     - {{ pin_compatible('numpy') }}
-    - {{ pin_compatible('scipy') }}
+    - scipy >=0.18
+    - tqdm
     - netcdf4
   run_constrained:
     - dill >=0.3.2
@@ -49,6 +53,14 @@ test:
   imports:
     - sisl
     - sisl.io
+    - sisl.io.siesta._siesta
+    - sisl.geom
+    - sisl.linalg
+    - sisl.mixing
+    - sisl.physics
+    - sisl.shape
+    - sisl.unit
+    - sisl.utils
 
 about:
   home: https://github.com/zerothi/sisl
