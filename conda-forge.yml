@@ -1,4 +1,4 @@
 provider:
   win: azure
 conda_forge_output_validation: true
-min_py_ver: 3.7
+min_py_ver: "37"
