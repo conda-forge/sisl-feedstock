@@ -10,6 +10,8 @@ source:
   fn: {{ name }}-{{ version }}.tar.gz
   url: https://github.com/zerothi/{{ name }}/archive/v{{ version }}.tar.gz
   sha256: {{ sha256 }}
+  patches:
+    - patches/random_failure_seed.patch
 
 build:
   number: 2
@@ -48,6 +50,13 @@ test:
     - sisl
     - sisl.io
     - sisl.io.siesta._siesta
+    - sisl.geom
+    - sisl.linalg
+    - sisl.mixing
+    - sisl.physics
+    - sisl.shape
+    - sisl.unit
+    - sisl.utils
 
 about:
   home: https://github.com/zerothi/sisl
