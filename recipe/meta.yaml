@@ -28,6 +28,10 @@ requirements:
     - liblapack
     - python
     - cython
+    # this is for the sisl requirement
+    - numpy >=1.13
+    # this is for conda-smithy so that the global
+    # pinning is correctly specified
     - numpy
     - scipy >=0.18
     - netcdf4
@@ -35,7 +39,7 @@ requirements:
   run:
     - python
     - pyparsing >=1.5.7
-    - {{ pin_compatible('numpy', min_pin='x.x') }}
+    - {{ pin_compatible('numpy', min_pin='1.13') }}
     - scipy >=0.18
     - tqdm
     - netcdf4
