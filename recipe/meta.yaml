@@ -14,7 +14,7 @@ source:
     - patches/random_failure_seed.patch
 
 build:
-  number: 2
+  number: 3
   skip: true  # [win]
 
 requirements:
