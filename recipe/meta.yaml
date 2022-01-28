@@ -1,6 +1,6 @@
 {% set name = "sisl" %}
-{% set version = "0.11.0" %}
-{% set sha256 = "23dc2f91143921fb2b2c772e6ff59807163c22f03c00fcf018c8f51aefb02494" %}
+{% set version = "0.12.0" %}
+{% set sha256 = "1b7280d2656f9d2e302060613efe265865f41d12720f5e591a12c42ecc4b6190" %}
 
 package:
   name: {{ name }}
@@ -14,7 +14,7 @@ source:
     - patches/random_failure_seed.patch
 
 build:
-  number: 3
+  number: 0
   skip: true  # [win]
 
 requirements:
