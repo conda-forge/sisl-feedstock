@@ -3,7 +3,7 @@ About sisl
 
 Home: https://github.com/zerothi/sisl
 
-Package license: LGPL-3.0-or-later
+Package license: MPL-2.0
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/sisl-feedstock/blob/master/LICENSE.txt)
 
