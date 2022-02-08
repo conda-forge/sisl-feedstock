@@ -10,8 +10,6 @@ source:
   fn: {{ name }}-{{ version }}.tar.gz
   url: https://github.com/zerothi/{{ name }}/archive/v{{ version }}.tar.gz
   sha256: {{ sha256 }}
-  patches:
-    - patches/random_failure_seed.patch
 
 build:
   number: 0
@@ -64,8 +62,8 @@ test:
 
 about:
   home: https://github.com/zerothi/sisl
-  license: LGPL-3.0-or-later
-  license_family: LGPL
+  license: MPL-2.0
+  license_family: MPL
   license_file: LICENSE
   summary: Toolbox for electronic structure calculations and large scale transport
   description: |
