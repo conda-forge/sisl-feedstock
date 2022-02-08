@@ -10,7 +10,9 @@ source:
   fn: {{ name }}-{{ version }}.tar.gz
   url: https://github.com/zerothi/{{ name }}/archive/v{{ version }}.tar.gz
   sha256: {{ sha256 }}
-
+  patches:
+    - patches/remove_oldest_numpy.patch
+ 
 build:
   number: 0
   skip: true  # [win]

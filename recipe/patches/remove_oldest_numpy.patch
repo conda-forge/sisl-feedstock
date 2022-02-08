@@ -1,0 +1,20 @@
+diff --git a/pyproject.toml b/pyproject.toml
+index 8888ef0ce..3e80d14b7 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -17,7 +17,7 @@ requires = [
+     "Cython>=0.28",
+     # see https://github.com/scipy/oldest-supported-numpy/
+     # should fix #310
+-    "oldest-supported-numpy; sys_platform != 'win32'",
++    #"oldest-supported-numpy; sys_platform != 'win32'",
+     # TODO work-arounds for windows installations where -mno-cygwin is passed
+     "numpy==1.19.5 ; sys_platform == 'win32' and python_version <= '3.9'",
+     "numpy==1.21.5 ; sys_platform == 'win32' and python_version >= '3.10'",
+@@ -237,4 +237,4 @@ archs = ["x86_64", "universal2",  "arm64"]
+ [tool.cibuildwheel.windows]
+ # Use delvewheel on windows to gather all dll files.
+ before-build = "pip install delvewheel"
+-repair-wheel-command = "delvewheel repair --no-mangle-all --ignore-in-wheel -w {dest_dir} {wheel}"
+\ No newline at end of file
++repair-wheel-command = "delvewheel repair --no-mangle-all --ignore-in-wheel -w {dest_dir} {wheel}"
