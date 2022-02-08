@@ -12,6 +12,7 @@ source:
   sha256: {{ sha256 }}
   patches:
     - patches/remove_oldest_numpy.patch
+    - patches/xarray_import.patch
  
 build:
   number: 0
