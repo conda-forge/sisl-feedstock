@@ -13,6 +13,7 @@ source:
   patches:
     - patches/remove_oldest_numpy.patch
     - patches/xarray_import.patch
+    - patches/state_rotate.patch
  
 build:
   number: 0
