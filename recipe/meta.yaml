@@ -16,6 +16,7 @@ source:
     - patches/xarray_import.patch
     - patches/state_rotate.patch
     - patches/datacopied.patch
+    - patches/mac_os.patch
  
 build:
   number: 0
