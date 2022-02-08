@@ -17,6 +17,7 @@ source:
     - patches/state_rotate.patch
     - patches/datacopied.patch
     - patches/mac_os.patch
+    - patches/viz_310.patch
  
 build:
   number: 0
