@@ -1,0 +1,26 @@
+diff --git a/pyproject.toml b/pyproject.toml
+index 5641d29f..f62729b8 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -17,7 +17,7 @@ requires = [
+     "Cython>=0.28",
+     # see https://github.com/scipy/oldest-supported-numpy/
+     # should fix #310
+-    "oldest-supported-numpy",
++    #"oldest-supported-numpy",
+ ]
+ build-backend = "setuptools.build_meta"
+ 
+diff --git a/setup.py b/setup.py
+index 81a7920c..f6ffe72a 100644
+--- a/setup.py
++++ b/setup.py
+@@ -362,7 +362,7 @@ metadata = dict(
+         "Cython>=0.28",
+         # see https://github.com/scipy/oldest-supported-numpy/
+         # should fix #310
+-        "oldest-supported-numpy"
++        #"oldest-supported-numpy"
+     ],
+ 
+     # Options should be specified in pyproject.toml
