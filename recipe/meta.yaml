@@ -33,6 +33,8 @@ requirements:
     - numpy
     - scipy >=0.18
     - netcdf4
+    - wheel
+    - setuptools_scm
     - pyparsing >=1.5.7
   run:
     - python
