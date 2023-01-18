@@ -1,6 +1,6 @@
 {% set name = "sisl" %}
-{% set version = "0.12.2" %}
-{% set sha256 = "47bc518065b74d16be41f8651e73970a1565c93b41dbc4765f90f3522bb9c37e" %}
+{% set version = "0.13.0" %}
+{% set sha256 = "df130571dec146a70bcde9034a27d146063499532dbb70f5691bbce7781ba2b7" %}
 
 package:
   name: {{ name }}
@@ -33,7 +33,7 @@ requirements:
     # this is for conda-smithy so that the global
     # pinning is correctly specified
     - numpy
-    - scipy >=0.18
+    - scipy >=1.5.0
     - netcdf4
     - wheel
     - setuptools_scm
@@ -42,7 +42,7 @@ requirements:
     - python
     - pyparsing >=1.5.7
     - {{ pin_compatible('numpy') }}
-    - scipy >=0.18
+    - scipy >=1.5.0
     - tqdm
     - netcdf4
   run_constrained:
