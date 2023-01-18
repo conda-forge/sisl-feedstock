@@ -14,7 +14,7 @@ source:
     - patches/remove_oldest_numpy.patch
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win]
 
 requirements:
@@ -33,7 +33,7 @@ requirements:
     # this is for conda-smithy so that the global
     # pinning is correctly specified
     - numpy
-    - scipy >=0.18
+    - scipy >=1.5.0
     - netcdf4
     - wheel
     - setuptools_scm
@@ -42,7 +42,7 @@ requirements:
     - python
     - pyparsing >=1.5.7
     - {{ pin_compatible('numpy') }}
-    - scipy >=0.18
+    - scipy >=1.5.0
     - tqdm
     - netcdf4
   run_constrained:
