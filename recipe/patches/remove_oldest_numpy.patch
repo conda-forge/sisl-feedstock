@@ -1,9 +1,9 @@
 diff --git a/pyproject.toml b/pyproject.toml
-index 8888ef0ce..3e80d14b7 100644
+index 2d9ebad8..b1a60cbd 100644
 --- a/pyproject.toml
 +++ b/pyproject.toml
-@@ -17,7 +17,7 @@ requires = [
-     "Cython>=0.28",
+@@ -15,7 +15,7 @@ requires = [
+     "Cython>=0.29.28",
      # see https://github.com/scipy/oldest-supported-numpy/
      # should fix #310
 -    "oldest-supported-numpy; sys_platform != 'win32'",
