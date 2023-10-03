@@ -10,7 +10,14 @@ if [[ "$unamestr" == 'Linux' ]]; then
 fi
 
 # we enforce requirements through the conda configuration
-echo "exec: $PYTHON setup.py build"
-$PYTHON setup.py build
-echo "exec: $PYTHON setup.py install"
-$PYTHON setup.py install
+echo "exec: python -m pip install ."
+which python
+which python3
+echo $PYTHON
+
+echo ">>>>  environment"
+env
+echo CMAKE_ARGS=${CMAKE_ARGS}
+echo "<<<<  environment" 
+#CMAKE_ARGS="-DCMAKE_C_COMPILER=$GCC -DCMAKE_Fortran_COMPILER=$FC"
+$PYTHON -m pip install . -vvv --no-deps --no-build-isolation

@@ -1,6 +1,6 @@
 {% set name = "sisl" %}
-{% set version = "0.13.0" %}
-{% set sha256 = "df130571dec146a70bcde9034a27d146063499532dbb70f5691bbce7781ba2b7" %}
+{% set version = "0.14.1" %}
+{% set sha256 = "3b435c522c46fce846decf65829d1b937be01f5277e11a485dc382d6d28722e9" %}
 
 package:
   name: {{ name }}
@@ -14,29 +14,34 @@ source:
     - patches/remove_oldest_numpy.patch
 
 build:
-  number: 1
+  number: 0
   skip: true  # [win]
 
 requirements:
   build:
+    - cmake
+    - make  # [not win]
+    - ninja  # [win]
+    - python  # [build_platform != target_platform ]
+    - cross-python_{{ target_platform }}  # [build_platform != target_platform ]
+    - cython >=0.29.28  # [build_platform != target_platform ]
+    - numpy >1.22  # [build_platform != target_platform]
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
   host:
-    - setuptools
     - libblas
     - libcblas
     - liblapack
     - python
-    - cython
-    # this is for the sisl requirement
-    - numpy >=1.13
-    # this is for conda-smithy so that the global
-    # pinning is correctly specified
-    - numpy
+    - pip
+    - scikit-build-core
+    - pyproject-metadata
+    - setuptools_scm
+    - cython >=0.29.28
+    # a build problem occurs with 1.22.* (infinite recursion on module creation)
+    - numpy >1.22
     - scipy >=1.5.0
     - netcdf4
-    - wheel
-    - setuptools_scm
     - pyparsing >=1.5.7
   run:
     - python
@@ -44,14 +49,17 @@ requirements:
     - {{ pin_compatible('numpy') }}
     - scipy >=1.5.0
     - tqdm
+    - xarray >=0.10.0
     - netcdf4
+      #- vc 14  # [win]
   run_constrained:
     - dill >=0.3.2
-    - xarray >=0.10.0
 
 test:
   requires:
     - pytest
+    - plotly
+    - scikit-image
   imports:
     - sisl
     - sisl.io

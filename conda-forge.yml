@@ -1,8 +1,15 @@
 provider:
   win: azure
 conda_forge_output_validation: true
+build_platform:
+  osx_arm64: osx_64
+test: native_and_emulated
+bot:
+  # disable searching for missing imports/installs at build time
+  inspection: false
 github:
   branch_name: main
   tooling_branch_name: main
+test_on_native_only: true
 conda_build:
   pkg_format: '2'
