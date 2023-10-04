@@ -58,6 +58,7 @@ requirements:
 test:
   requires:
     - pytest
+    - matplotlib
     - plotly
     - scikit-image
   imports:
