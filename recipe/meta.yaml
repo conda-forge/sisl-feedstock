@@ -14,7 +14,7 @@ source:
     - patches/remove_oldest_numpy.patch
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win]
 
 requirements:
@@ -28,6 +28,7 @@ requirements:
     - numpy >1.22  # [build_platform != target_platform]
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
+    - {{ stdlib("c") }}
   host:
     - libblas
     - libcblas
@@ -46,7 +47,6 @@ requirements:
   run:
     - python
     - pyparsing >=1.5.7
-    - {{ pin_compatible('numpy') }}
     - scipy >=1.5.0
     - tqdm
     - xarray >=0.10.0
