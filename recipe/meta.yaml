@@ -1,6 +1,6 @@
 {% set name = "sisl" %}
-{% set version = "0.14.3" %}
-{% set sha256 = "858ea73437d0f519f3fecdb73e3bc1326e62385da4ea26e134ee6b4248dafd9e" %}
+{% set version = "0.15.0" %}
+{% set sha256 = "2fa637066e5de48f29521d5341efc1dd3df21d9cfff396ab432c700115e8c13d" %}
 
 package:
   name: {{ name }}
@@ -28,6 +28,7 @@ requirements:
     - numpy >1.22  # [build_platform != target_platform]
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
+    - {{ stdlib("c") }}
   host:
     - libblas
     - libcblas
