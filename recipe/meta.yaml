@@ -10,12 +10,11 @@ source:
   fn: {{ name }}-{{ version }}.tar.gz
   url: https://github.com/zerothi/{{ name }}/archive/v{{ version }}.tar.gz
   sha256: {{ sha256 }}
-  patches:
-    - patches/remove_oldest_numpy.patch
 
 build:
   number: 0
   skip: true  # [win]
+  skip: true  # [py<39]
 
 requirements:
   build:
@@ -23,9 +22,10 @@ requirements:
     - make  # [not win]
     - ninja  # [win]
     - python  # [build_platform != target_platform ]
+    - pip
     - cross-python_{{ target_platform }}  # [build_platform != target_platform ]
-    - cython >=0.29.28  # [build_platform != target_platform ]
-    - numpy >1.22  # [build_platform != target_platform]
+    - cython >=3  # [build_platform != target_platform ]
+    - numpy >=2.0.0rc1  # [build_platform != target_platform]
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
     - {{ stdlib("c") }}
@@ -34,25 +34,16 @@ requirements:
     - libcblas
     - liblapack
     - python
-    - pip
-    - scikit-build-core
-    - pyproject-metadata
-    - setuptools_scm
-    - cython >=0.29.28
     # a build problem occurs with 1.22.* (infinite recursion on module creation)
-    - numpy >1.22
-    - scipy >=1.5.0
-    - netcdf4
-    - pyparsing >=1.5.7
+    - numpy >=2.0.0rc1
   run:
     - python
-    - pyparsing >=1.5.7
+    - pyparsing >=2.2.1
     - {{ pin_compatible('numpy') }}
-    - scipy >=1.5.0
-    - tqdm
-    - xarray >=0.10.0
+    - scipy >=1.6
+    - tqdm >=4.36
+    - xarray >=0.21
     - netcdf4
-      #- vc 14  # [win]
   run_constrained:
     - dill >=0.3.2
 
