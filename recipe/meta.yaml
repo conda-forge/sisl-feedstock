@@ -34,6 +34,7 @@ requirements:
     - libcblas
     - liblapack
     - python
+    - pip
     # a build problem occurs with 1.22.* (infinite recursion on module creation)
     - numpy >=2.0.0rc1
   run:
