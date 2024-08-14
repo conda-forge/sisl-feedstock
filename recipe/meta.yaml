@@ -22,9 +22,7 @@ requirements:
     - make  # [not win]
     - ninja  # [win]
     - python  # [build_platform != target_platform ]
-    - pip
     - cross-python_{{ target_platform }}  # [build_platform != target_platform ]
-    - cython >=3  # [build_platform != target_platform ]
     - numpy >=2.0.0rc1  # [build_platform != target_platform]
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
@@ -35,6 +33,10 @@ requirements:
     - liblapack
     - python
     - pip
+    - pyproject-metadata
+    - setuptools_scm  >=6.2
+    - scikit-build-core >=0.8
+    - cython >=3  # [build_platform != target_platform ]
     # a build problem occurs with 1.22.* (infinite recursion on module creation)
     - numpy >=2.0.0rc1
   run:
