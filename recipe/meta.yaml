@@ -1,6 +1,6 @@
 {% set name = "sisl" %}
-{% set version = "0.15.0" %}
-{% set sha256 = "2fa637066e5de48f29521d5341efc1dd3df21d9cfff396ab432c700115e8c13d" %}
+{% set version = "0.15.1" %}
+{% set sha256 = "e2a0cd939f8be807972e56c9a3ef12bfa6fd19885400f79f1a2b637481cf9330" %}
 
 package:
   name: {{ name }}
