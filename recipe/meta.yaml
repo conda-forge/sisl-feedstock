@@ -1,6 +1,6 @@
 {% set name = "sisl" %}
 {% set version = "0.15.1" %}
-{% set sha256 = "e2a0cd939f8be807972e56c9a3ef12bfa6fd19885400f79f1a2b637481cf9330" %}
+{% set sha256 = "d071e352ad3b4dce77464ec08405f2f7ef1c71d440588b075a0c0753b0f2e804" %}
 
 package:
   name: {{ name }}
@@ -12,7 +12,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 1
   skip: true  # [win]
   skip: true  # [py<39]
 
@@ -21,13 +21,14 @@ requirements:
     - cmake
     - make  # [not win]
     - ninja  # [win]
-    - python  # [build_platform != target_platform ]
-    - cross-python_{{ target_platform }}  # [build_platform != target_platform ]
-    - cython >=3  # [build_platform != target_platform ]
-    - numpy >=2.0.0rc1  # [build_platform != target_platform]
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
     - {{ stdlib("c") }}
+    # The below python packages are necessary for cross-compilation
+    - python  # [build_platform != target_platform ]
+    - cross-python_{{ target_platform }}  # [build_platform != target_platform ]
+    - cython >=3  # [build_platform != target_platform ]
+    - numpy >=2.0.0rc1  # [build_platform != target_platform ]
   host:
     - libblas
     - libcblas
@@ -43,7 +44,7 @@ requirements:
   run:
     - python
     - pyparsing >=2.2.1
-    - {{ pin_compatible('numpy') }}
+    - numpy >=1.21
     - scipy >=1.6
     - tqdm >=4.36
     - xarray >=0.21
