@@ -1,7 +1,7 @@
 context:
   python_min: "3.10"
   name: "sisl"
-  version: "0.0.16.4"
+  version: "0.16.4"
   sha256: "244894e091c49c702d85a7f6c5836a20ef3affa6f3618fc6589ce36e6d838669"
 
 package:
