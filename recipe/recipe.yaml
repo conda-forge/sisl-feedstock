@@ -4,13 +4,13 @@ context:
   - sha256: "244894e091c49c702d85a7f6c5836a20ef3affa6f3618fc6589ce36e6d838669"
 
 package:
-  name: {{ name }}
-  version: {{ version }}
+  name: ${{ name }}
+  version: ${{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.tar.gz
-  url: https://github.com/zerothi/{{ name }}/archive/v{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  fn: ${{ name }}-${{ version }}.tar.gz
+  url: https://github.com/zerothi/${{ name }}/archive/v${{ version }}.tar.gz
+  sha256: ${{ sha256 }}
 
 build:
   number: 1
@@ -26,14 +26,14 @@ requirements:
         - ninja
       else:
         - make
-    - {{ compiler('fortran') }}
-    - {{ compiler('c') }}
-    - {{ stdlib("c") }}
+    - ${{ compiler('fortran') }}
+    - ${{ compiler('c') }}
+    - ${{ stdlib("c") }}
     # The below python packages are necessary for cross-compilation
     - if: build_platform != host_platform
       then:
         - python
-        - cross-python_{{ host_platform }}
+        - cross-python_${{ host_platform }}
         - cython >=3.0.8
         - numpy >=2.0.0rc1
   host:
