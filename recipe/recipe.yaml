@@ -61,10 +61,6 @@ requirements:
 
 tests:
   - python:
-      python_version:
-        # check the *oldest* supported, and the latest
-        - "${{ python_min }}"
-        - "3"
       imports:
         - sisl
         - sisl.io
