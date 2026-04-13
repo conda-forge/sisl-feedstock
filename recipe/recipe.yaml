@@ -16,7 +16,7 @@ source:
 build:
   number: 1
   skip:
-    - match(python, "<=${{ python_min }}")
+    - match(python, "<${{ python_min }}")
     - win
 
 requirements:
