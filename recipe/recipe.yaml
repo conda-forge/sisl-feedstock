@@ -12,22 +12,29 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
-  skip: true  # [py<39]
+  number: 1
+  skip:
+    - match(python, "<3.9")
+    - win
 
 requirements:
   build:
     - cmake
-    - make  # [not win]
-    - ninja  # [win]
+    - if: win
+      then:
+        - ninja
+      else:
+        - make
     - {{ compiler('fortran') }}
     - {{ compiler('c') }}
     - {{ stdlib("c") }}
     # The below python packages are necessary for cross-compilation
-    - python  # [build_platform != target_platform ]
-    - cross-python_{{ target_platform }}  # [build_platform != target_platform ]
-    - cython >=3.0.8  # [build_platform != target_platform ]
-    - numpy >=2.0.0rc1  # [build_platform != target_platform ]
+    - if: build_platform != target_platform
+      then:
+        - python
+        - cross-python_{{ target_platform }}
+        - cython >=3.0.8
+        - numpy >=2.0.0rc1
   host:
     - libblas
     - libcblas
@@ -52,23 +59,28 @@ requirements:
     - dill >=0.3.2
 
 test:
-  requires:
-    - pytest
-    - matplotlib
-    - nodify
-    - plotly
-    - scikit-image
-  imports:
-    - sisl
-    - sisl.io
-    - sisl.io.siesta._siesta
-    - sisl.geom
-    - sisl.linalg
-    - sisl.mixing
-    - sisl.physics
-    - sisl.shape
-    - sisl.unit
-    - sisl.utils
+  - files:
+    requirements:
+      run:
+        - pip
+        - pytest
+        - matplotlib
+        - nodify
+        - plotly
+        - scikit-image
+  - python:
+    imports:
+      - sisl
+      - sisl.io
+      - sisl.io.siesta._siesta
+      - sisl.geom
+      - sisl.linalg
+      - sisl.mixing
+      - sisl.physics
+      - sisl.shape
+      - sisl.unit
+      - sisl.utils
+    pip_check: true
 
 about:
   home: https://github.com/zerothi/sisl
