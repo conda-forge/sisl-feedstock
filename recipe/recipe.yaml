@@ -1,21 +1,22 @@
 context:
-  - name: "sisl"
-  - version: "0.0.16.4"
-  - sha256: "244894e091c49c702d85a7f6c5836a20ef3affa6f3618fc6589ce36e6d838669"
+  python_min: "3.10"
+  name: "sisl"
+  version: "0.0.16.4"
+  sha256: "244894e091c49c702d85a7f6c5836a20ef3affa6f3618fc6589ce36e6d838669"
 
 package:
   name: ${{ name }}
   version: ${{ version }}
 
 source:
-  fn: ${{ name }}-${{ version }}.tar.gz
+  file_name: ${{ name }}-${{ version }}.tar.gz
   url: https://github.com/zerothi/${{ name }}/archive/v${{ version }}.tar.gz
   sha256: ${{ sha256 }}
 
 build:
   number: 1
   skip:
-    - match(python, "<3.9")
+    - match(python, "<=${{ python_min }}")
     - win
 
 requirements:
@@ -56,12 +57,28 @@ requirements:
     - tqdm >=4.36
     - xarray >=0.21
     - netcdf4
-  run_constrained:
+  run_constraints:
     - dill >=0.3.2
 
-test:
-  - files:
-    requirements:
+tests:
+  - python:
+      python_version:
+        # check the *oldest* supported, and the latest
+        - "${{ python_min }}"
+        - "3"
+      imports:
+        - sisl
+        - sisl.io
+        - sisl.io.siesta._siesta
+        - sisl.geom
+        - sisl.linalg
+        - sisl.mixing
+        - sisl.physics
+        - sisl.shape
+        - sisl.unit
+        - sisl.utils
+      pip_check: true
+  - requirements:
       run:
         - pip
         - pytest
@@ -69,22 +86,10 @@ test:
         - nodify
         - plotly
         - scikit-image
-  - python:
-    imports:
-      - sisl
-      - sisl.io
-      - sisl.io.siesta._siesta
-      - sisl.geom
-      - sisl.linalg
-      - sisl.mixing
-      - sisl.physics
-      - sisl.shape
-      - sisl.unit
-      - sisl.utils
-    pip_check: true
+    script:
+      - pytest . -m "not slow"
 
 about:
-  home: https://github.com/zerothi/sisl
   license: MPL-2.0
   license_family: MOZILLA
   license_file: LICENSE
@@ -93,8 +98,9 @@ about:
     sisl is a tool to manipulate density functional
     theory code input and/or output. It also implements tight-binding
     tools to create and manipulate multi-orbital (non)-orthogonal basis sets.
-  doc_url: https://zerothi.github.io/sisl
-  dev_url: https://github.com/zerothi/sisl
+  homepage: https://github.com/zerothi/sisl
+  documentation: https://zerothi.github.io/sisl
+  repository: https://github.com/zerothi/sisl
 
 extra:
   recipe-maintainers:
