@@ -17,7 +17,6 @@ sisl is a tool to manipulate density functional
 theory code input and/or output. It also implements tight-binding
 tools to create and manipulate multi-orbital (non)-orthogonal basis sets.
 
-
 Current build status
 ====================
 
