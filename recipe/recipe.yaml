@@ -1,8 +1,8 @@
 context:
   python_min: "3.10"
   name: "sisl"
-  version: "0.16.4"
-  sha256: "244894e091c49c702d85a7f6c5836a20ef3affa6f3618fc6589ce36e6d838669"
+  version: "0.20.0"
+  sha256: "f32c290e157387c30163cde8315a3b66f1cb46f09d17d16d8e1da7c6974790f0"
 
 package:
   name: ${{ name }}
@@ -13,7 +13,7 @@ source:
   sha256: ${{ sha256 }}
 
 build:
-  number: 1
+  number: 0
   skip:
     - match(python, "<${{ python_min }}")
     - win
