@@ -11,6 +11,8 @@ package:
 source:
   url: https://github.com/zerothi/${{ name }}/archive/v${{ version }}.tar.gz
   sha256: ${{ sha256 }}
+  patches:
+    - patches/nofortran-tests.patch
 
 build:
   number: 0

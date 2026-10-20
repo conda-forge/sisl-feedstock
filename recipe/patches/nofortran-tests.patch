@@ -1,0 +1,412 @@
+diff --git a/src/sisl/conftest.py b/src/sisl/conftest.py
+index c99f3e91d..f964f37d0 100644
+--- a/src/sisl/conftest.py
++++ b/src/sisl/conftest.py
+@@ -6,7 +6,8 @@ from __future__ import annotations
+ """ Global sisl fixtures """
+ import logging
+ import os
+-from functools import partial
++from functools import cache, partial
++from importlib import import_module
+ from pathlib import Path
+ 
+ import numpy as np
+@@ -268,13 +269,38 @@ def sisl_system():
+     return d
+ 
+ 
+-@pytest.fixture(scope="function")
+-def sisl_importskip():
+-    def importorskip(*modules):
+-        for module in modules:
+-            pytest.importorskip(f"{module}")
++@cache
++def _importable(module: str) -> bool:
++    try:
++        import_module(module)
++    except ImportError:
++        return False
++    return True
++
++
++def sisl_requires(*modules: str):
++    """Decorator that skips a test, or a test class, if a module cannot be imported
++
++    Contrary to `pytest.importorskip` this only skips the decorated test,
++    and not the full test module.
++    It may also be assigned to ``pytestmark`` to skip all tests in a module.
+ 
+-    return importorskip
++    Parameters
++    ----------
++    *modules :
++        fully qualified module names that the test requires
++
++    Examples
++    --------
++    >>> from sisl.conftest import sisl_requires
++    >>> @sisl_requires("sisl.io.siesta._siesta")
++    ... def test_fortran():
++    ...     ...
++    """
++    missing = [module for module in modules if not _importable(module)]
++    return pytest.mark.skipif(
++        bool(missing), reason=f"requires module(s): {', '.join(missing)}"
++    )
+ 
+ 
+ collect_ignore = []
+diff --git a/src/sisl/io/siesta/tests/test_dm.py b/src/sisl/io/siesta/tests/test_dm.py
+index fe4160c14..7e4f39d12 100644
+--- a/src/sisl/io/siesta/tests/test_dm.py
++++ b/src/sisl/io/siesta/tests/test_dm.py
+@@ -10,8 +10,13 @@ import numpy as np
+ import pytest
+ 
+ import sisl
++from sisl.conftest import sisl_requires
+ 
+-pytestmark = [pytest.mark.io, pytest.mark.siesta]
++pytestmark = [
++    pytest.mark.io,
++    pytest.mark.siesta,
++    sisl_requires("sisl.io.siesta._siesta"),
++]
+ 
+ 
+ def test_dm_si_pdos_kgrid(sisl_files):
+diff --git a/src/sisl/io/siesta/tests/test_eig.py b/src/sisl/io/siesta/tests/test_eig.py
+index 9c14d31b7..8786bdab0 100644
+--- a/src/sisl/io/siesta/tests/test_eig.py
++++ b/src/sisl/io/siesta/tests/test_eig.py
+@@ -7,6 +7,7 @@ import numpy as np
+ import pytest
+ 
+ import sisl
++from sisl.conftest import sisl_requires
+ from sisl.io.siesta.eig import *
+ from sisl.io.siesta.fdf import *
+ 
+@@ -77,6 +78,7 @@ def test_soc_pt2_xx_eig(sisl_files):
+     assert np.all(eig.shape == (1, 1, 76))
+ 
+ 
++@sisl_requires("sisl.io.siesta._siesta")
+ def test_soc_pt2_xx_eig_fermi_level(sisl_files):
+     f = sisl_files("siesta", "Pt2_soc", "Pt2_xx.EIG")
+     ef = eigSileSiesta(f).read_fermi_level()
+diff --git a/src/sisl/io/siesta/tests/test_gf.py b/src/sisl/io/siesta/tests/test_gf.py
+index 4c619607e..262b03dd8 100644
+--- a/src/sisl/io/siesta/tests/test_gf.py
++++ b/src/sisl/io/siesta/tests/test_gf.py
+@@ -7,8 +7,13 @@ import numpy as np
+ import pytest
+ 
+ import sisl
++from sisl.conftest import sisl_requires
+ 
+-pytestmark = [pytest.mark.io, pytest.mark.siesta]
++pytestmark = [
++    pytest.mark.io,
++    pytest.mark.siesta,
++    sisl_requires("sisl.io.siesta._siesta"),
++]
+ 
+ 
+ def test_gf_write_read(sisl_tmp, sisl_system):
+diff --git a/src/sisl/io/siesta/tests/test_grid.py b/src/sisl/io/siesta/tests/test_grid.py
+index a4d8aad47..e6d608def 100644
+--- a/src/sisl/io/siesta/tests/test_grid.py
++++ b/src/sisl/io/siesta/tests/test_grid.py
+@@ -7,8 +7,13 @@ import numpy as np
+ import pytest
+ 
+ import sisl
++from sisl.conftest import sisl_requires
+ 
+-pytestmark = [pytest.mark.io, pytest.mark.siesta]
++pytestmark = [
++    pytest.mark.io,
++    pytest.mark.siesta,
++    sisl_requires("sisl.io.siesta._siesta"),
++]
+ 
+ 
+ def test_si_pdos_kgrid_grid(sisl_files):
+diff --git a/src/sisl/io/siesta/tests/test_hsx.py b/src/sisl/io/siesta/tests/test_hsx.py
+index 67ce66780..c4d6ff22e 100644
+--- a/src/sisl/io/siesta/tests/test_hsx.py
++++ b/src/sisl/io/siesta/tests/test_hsx.py
+@@ -9,8 +9,13 @@ import numpy as np
+ import pytest
+ 
+ import sisl
++from sisl.conftest import sisl_requires
+ 
+-pytestmark = [pytest.mark.io, pytest.mark.siesta]
++pytestmark = [
++    pytest.mark.io,
++    pytest.mark.siesta,
++    sisl_requires("sisl.io.siesta._siesta"),
++]
+ 
+ 
+ def si_pdos_kgrid_geom(with_orbs=True):
+diff --git a/src/sisl/io/siesta/tests/test_matrices.py b/src/sisl/io/siesta/tests/test_matrices.py
+index d2bdd8714..fc1713d2b 100644
+--- a/src/sisl/io/siesta/tests/test_matrices.py
++++ b/src/sisl/io/siesta/tests/test_matrices.py
+@@ -7,18 +7,26 @@ import numpy as np
+ import pytest
+ 
+ import sisl
++from sisl.conftest import sisl_requires
+ 
+-pytestmark = [pytest.mark.io, pytest.mark.siesta]
++pytestmark = [
++    pytest.mark.io,
++    pytest.mark.siesta,
++]
+ 
+-listify = sisl.utils.listify
++_fortran = sisl_requires("sisl.io.siesta._siesta")
+ 
+ 
+ @pytest.mark.parametrize("sort", [True, False])
+ @pytest.mark.parametrize(
+     "matrix,ext",
+-    (map(lambda x: ("Hamiltonian", x), ["nc", "TSHS"]) | listify)
+-    + (map(lambda x: ("DensityMatrix", x), ["nc", "DM"]) | listify)
+-    + (map(lambda x: ("EnergyDensityMatrix", x), ["nc"]) | listify),
++    [
++        ("Hamiltonian", "nc"),
++        pytest.param("Hamiltonian", "TSHS", marks=_fortran),
++        ("DensityMatrix", "nc"),
++        pytest.param("DensityMatrix", "DM", marks=_fortran),
++        ("EnergyDensityMatrix", "nc"),
++    ],
+ )
+ @pytest.mark.parametrize("read_dtype", [np.float64, np.complex128])
+ @pytest.mark.parametrize("dtype", [np.float32, np.float64, np.complex128])
+@@ -66,9 +74,13 @@ def test_non_colinear(sisl_tmp, sort, matrix, ext, dtype, read_dtype):
+ @pytest.mark.parametrize("sort", [True, False])
+ @pytest.mark.parametrize(
+     "matrix,ext",
+-    (map(lambda x: ("Hamiltonian", x), ["nc", "TSHS"]) | listify)
+-    + (map(lambda x: ("DensityMatrix", x), ["nc", "DM"]) | listify)
+-    + (map(lambda x: ("EnergyDensityMatrix", x), ["nc"]) | listify),
++    [
++        ("Hamiltonian", "nc"),
++        pytest.param("Hamiltonian", "TSHS", marks=_fortran),
++        ("DensityMatrix", "nc"),
++        pytest.param("DensityMatrix", "DM", marks=_fortran),
++        ("EnergyDensityMatrix", "nc"),
++    ],
+ )
+ @pytest.mark.parametrize("read_dtype", [np.float64, np.complex128])
+ @pytest.mark.parametrize("dtype", [np.float32, np.float64, np.complex128])
+diff --git a/src/sisl/io/siesta/tests/test_siesta.py b/src/sisl/io/siesta/tests/test_siesta.py
+index e959fe6ed..b76f8259b 100644
+--- a/src/sisl/io/siesta/tests/test_siesta.py
++++ b/src/sisl/io/siesta/tests/test_siesta.py
+@@ -15,11 +15,14 @@ from sisl import (
+     Geometry,
+     Hamiltonian,
+ )
++from sisl.conftest import sisl_requires
+ from sisl.io.siesta import *
+ 
+-pytestmark = [pytest.mark.io, pytest.mark.siesta]
+-
+-netCDF4 = pytest.importorskip("netCDF4")
++pytestmark = [
++    pytest.mark.io,
++    pytest.mark.siesta,
++    sisl_requires("netCDF4"),
++]
+ 
+ 
+ def test_nc1(sisl_tmp, sisl_system):
+@@ -162,6 +165,7 @@ def test_nc_density_matrix(sisl_tmp, sisl_system):
+ 
+ 
+ @pytest.mark.filterwarnings("ignore", message="*is NOT Hermitian for on-site")
++@sisl_requires("sisl.io.siesta._siesta")
+ def test_nc_H_spin_orbit_nc2tshs2nc(sisl_tmp):
+     H1 = Hamiltonian(sisl.geom.graphene(), spin=sisl.Spin("SO"))
+     H1.construct(
+@@ -190,6 +194,7 @@ def test_nc_H_spin_orbit_nc2tshs2nc(sisl_tmp):
+ 
+ 
+ @pytest.mark.filterwarnings("ignore", message="*is NOT Hermitian for on-site")
++@sisl_requires("sisl.io.siesta._siesta")
+ def test_nc_DM_spin_orbit_nc2dm2nc(sisl_tmp):
+     DM1 = DensityMatrix(sisl.geom.graphene(), orthogonal=False, spin=sisl.Spin("SO"))
+     DM1.construct(
+diff --git a/src/sisl/io/siesta/tests/test_tsde.py b/src/sisl/io/siesta/tests/test_tsde.py
+index e251b3468..b361ea578 100644
+--- a/src/sisl/io/siesta/tests/test_tsde.py
++++ b/src/sisl/io/siesta/tests/test_tsde.py
+@@ -10,8 +10,13 @@ import numpy as np
+ import pytest
+ 
+ import sisl
++from sisl.conftest import sisl_requires
+ 
+-pytestmark = [pytest.mark.io, pytest.mark.siesta]
++pytestmark = [
++    pytest.mark.io,
++    pytest.mark.siesta,
++    sisl_requires("sisl.io.siesta._siesta"),
++]
+ 
+ 
+ def test_si_pdos_kgrid_tsde_dm(sisl_files):
+diff --git a/src/sisl/io/siesta/tests/test_tshs.py b/src/sisl/io/siesta/tests/test_tshs.py
+index 3408e9232..5581e8373 100644
+--- a/src/sisl/io/siesta/tests/test_tshs.py
++++ b/src/sisl/io/siesta/tests/test_tshs.py
+@@ -10,8 +10,13 @@ import numpy as np
+ import pytest
+ 
+ import sisl
++from sisl.conftest import sisl_requires
+ 
+-pytestmark = [pytest.mark.io, pytest.mark.siesta]
++pytestmark = [
++    pytest.mark.io,
++    pytest.mark.siesta,
++    sisl_requires("sisl.io.siesta._siesta"),
++]
+ 
+ 
+ def test_tshs_si_pdos_kgrid(sisl_files, sisl_tmp):
+diff --git a/src/sisl/io/siesta/tests/test_wfsx.py b/src/sisl/io/siesta/tests/test_wfsx.py
+index e096bcaa2..8e1c787fe 100644
+--- a/src/sisl/io/siesta/tests/test_wfsx.py
++++ b/src/sisl/io/siesta/tests/test_wfsx.py
+@@ -6,8 +6,13 @@ from __future__ import annotations
+ import pytest
+ 
+ import sisl
++from sisl.conftest import sisl_requires
+ 
+-pytestmark = [pytest.mark.io, pytest.mark.siesta]
++pytestmark = [
++    pytest.mark.io,
++    pytest.mark.siesta,
++    sisl_requires("sisl.io.siesta._siesta"),
++]
+ 
+ 
+ def test_wfsx_read(sisl_files):
+diff --git a/src/sisl_toolbox/btd/tests/test_electrode.py b/src/sisl_toolbox/btd/tests/test_electrode.py
+index bfd3194b4..d68e95c3e 100644
+--- a/src/sisl_toolbox/btd/tests/test_electrode.py
++++ b/src/sisl_toolbox/btd/tests/test_electrode.py
+@@ -8,7 +8,7 @@ import pytest
+ import scipy.sparse as ssp
+ 
+ import sisl as si
+-from sisl.conftest import sisl_importskip
++from sisl.conftest import sisl_requires
+ from sisl_toolbox.btd import (
+     BlochElectrode,
+     DeviceGreen,
+@@ -203,6 +203,7 @@ def test_real_space_self_energy():
+     )
+ 
+ 
++@sisl_requires("sisl.io.siesta._siesta")
+ def test_real_space_gf(tmp_path):
+     se = _real_space_se()
+     Hc = se.real_space_coupling()
+@@ -220,6 +221,7 @@ def test_real_space_gf(tmp_path):
+     assert ssp.issparse(elec.bulk_matrix(E[0], format="csr"))
+ 
+ 
++@sisl_requires("sisl.io.siesta._siesta")
+ def test_bloch_gf(tmp_path):
+     hop = np.array([[-1.0, -0.2], [-0.2, -0.7]])
+     Hel = _electrode(hop, orthogonal=False)
+@@ -559,9 +561,9 @@ def test_device_green_downfold_overlap():
+         DeviceGreen(H, [outer, other], device)
+ 
+ 
++@sisl_requires("netCDF4")
+ @pytest.mark.parametrize("prefix", ["TBT", "TS"])
+-def test_electrode_from_fdf(tmp_path, prefix, sisl_importskip):
+-    sisl_importskip("netCDF4")
++def test_electrode_from_fdf(tmp_path, prefix):
+     hop = np.array([[-1.0, -0.2], [-0.2, -0.7]])
+     Hel = _electrode(hop)
+     Hel.write(tmp_path / "elec.nc")
+@@ -607,6 +609,7 @@ def test_device_green_unknown_electrode():
+         G.transmission(0.3, "Middle", "Right")
+ 
+ 
++@sisl_requires("netCDF4")
+ @pytest.mark.parametrize(
+     "semi_inf, error",
+     [
+@@ -619,8 +622,7 @@ def test_device_green_unknown_electrode():
+         ("-x", ValueError),
+     ],
+ )
+-def test_electrode_from_fdf_semi_inf(tmp_path, semi_inf, error, sisl_importskip):
+-    sisl_importskip("netCDF4")
++def test_electrode_from_fdf_semi_inf(tmp_path, semi_inf, error):
+     Hel = _electrode(np.array([[-1.0, -0.2], [-0.2, -0.7]]))
+     Hel.write(tmp_path / "elec.nc")
+     fdf = tmp_path / "RUN.fdf"
+@@ -634,9 +636,9 @@ def test_electrode_from_fdf_semi_inf(tmp_path, semi_inf, error, sisl_importskip)
+         Electrode.from_fdf(fdf, "Left", mu=0.0, downfold=False)
+ 
+ 
++@sisl_requires("netCDF4", "sisl.io.siesta._siesta")
+ @pytest.mark.parametrize("use_gf", [True, False])
+-def test_electrode_from_fdf_gf(tmp_path, use_gf, sisl_importskip):
+-    sisl_importskip("netCDF4")
++def test_electrode_from_fdf_gf(tmp_path, use_gf):
+     hop = np.array([[-1.0, -0.2], [-0.2, -0.7]])
+     Hel = _electrode(hop)
+     Hel.write(tmp_path / "elec.nc")
+diff --git a/techs/11-testing.md b/techs/11-testing.md
+index c428208df..5842e34b4 100644
+--- a/techs/11-testing.md
++++ b/techs/11-testing.md
+@@ -36,6 +36,33 @@ Many tests use files from the separate repository
+ 
+ A green run without `SISL_FILES_TESTS` does not test the IO code. Do not report it as a full pass.
+ 
++## Optional modules
++
++Some tests need a module that is not always available,
++for example `netCDF4` or the Fortran module `sisl.io.siesta._siesta`.
++Use the decorator `sisl_requires` from `sisl.conftest`:
++
++```python
++from sisl.conftest import sisl_requires
++
++@sisl_requires("sisl.io.siesta._siesta")
++def test_fortran():
++    ...
++
++# skip all tests in a module
++pytestmark = sisl_requires("netCDF4")
++```
++
++- `pytest.importorskip` at module level skips all tests in the module.
++  `sisl_requires` skips only the decorated test or class.
++- `sisl_requires` imports the module, and does not use only `importlib.util.find_spec`.
++  An extension that is on disk but does not load (for example, a missing `libgfortran`)
++  makes the import fail. Then `sisl.io.siesta.sile` uses the stub, and the test must skip.
++- The result of the import is cached. Each module is imported a maximum of one time.
++- Inside a test body, the fixture `sisl_importskip` does the same.
++- A test that uses a Fortran Sile without `sisl_requires` becomes `xfail`
++  when the Fortran sources are not built. See [50 · Siesta and Fortran](50-io.md#siesta-and-fortran).
++
+ ## Parallelism
+ 
+ Set `SISL_NUM_PROCS=1` when you debug. This stops the parallel execution.
