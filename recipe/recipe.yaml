@@ -16,6 +16,7 @@ source:
     - patches/zipfile-tests.patch
     - patches/green-tests.patch
     - patches/sisl-tmp-tests.patch
+    - patches/xfail-tests.patch
 
 build:
   number: 0
