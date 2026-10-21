@@ -14,6 +14,7 @@ source:
   patches:
     - patches/nofortran-tests.patch
     - patches/zipfile-tests.patch
+    - patches/green-tests.patch
 
 build:
   number: 0
