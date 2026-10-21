@@ -19,7 +19,7 @@ source:
     - patches/xfail-tests.patch
 
 build:
-  number: 0
+  number: 1
   skip:
     - match(python, "<${{ python_min }}")
 
@@ -83,7 +83,7 @@ tests:
       pip_check: true
 
   - script:
-     - pytest . -m "not slow" --timeout=60 --capture=tee-sys -v
+      - pytest . -m "not slow" --timeout=60 --capture=tee-sys -v
     requirements:
       run:
         - pytest
