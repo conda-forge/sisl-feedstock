@@ -73,20 +73,24 @@ tests:
         - sisl.shape
         - sisl.unit
         - sisl.utils
+        - sisl_toolbox.btd
+        # We currently don't support fortran on windows
+        - if: not win
+          then: sisl.io.siesta._siesta
       pip_check: true
-  - requirements:
+
+  - script:
+      - pytest . -m "not slow" --timeout=60 --capture=tee-sys -v
+    env:
+      PYTHONUNBUFFERED: 1
+    requirements:
       run:
-        - pip
         - pytest
         - pytest-timeout
         - matplotlib
         - nodify
         - plotly
         - scikit-image
-    script:
-      - sdata -h
-      # Timeout after 60 seconds, we don't have any test that slow
-      - PYTHONUNBUFFERED=1 pytest . -m "not slow" --timeout 60 --capture=tee-sys -v
 
 about:
   license: MPL-2.0
