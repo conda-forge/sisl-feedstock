@@ -78,6 +78,7 @@ tests:
       run:
         - pip
         - pytest
+        - pytest-timeout
         - matplotlib
         - nodify
         - plotly
