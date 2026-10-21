@@ -13,6 +13,7 @@ source:
   sha256: ${{ sha256 }}
   patches:
     - patches/nofortran-tests.patch
+    - patches/zipfile-tests.patch
 
 build:
   number: 0
@@ -82,7 +83,9 @@ tests:
         - plotly
         - scikit-image
     script:
-      - pytest . -m "not slow"
+      - sdata -h
+      # Timeout after 60 seconds, we don't have any test that slow
+      - PYTHONUNBUFFERED=1 pytest . -m "not slow" --timeout 60 --capture=tee-sys -v
 
 about:
   license: MPL-2.0
