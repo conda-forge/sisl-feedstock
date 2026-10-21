@@ -1,0 +1,349 @@
+diff --git a/pyproject.toml b/pyproject.toml
+index 5e3663da6..ed76a5ef6 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -264,7 +264,10 @@ markers = [
+     "btd: mark a test of the sisl_toolbox.btd toolbox",
+ ]
+ 
+-addopts = "-rXs --durations=20"
++addopts = [
++    "-raw",
++    "--durations=20",
++]
+ 
+ [tool.coverage.run]
+ source_pkgs = [
+diff --git a/src/sisl/_core/tests/test_atoms.py b/src/sisl/_core/tests/test_atoms.py
+index 2a2985b50..36f97e6cd 100644
+--- a/src/sisl/_core/tests/test_atoms.py
++++ b/src/sisl/_core/tests/test_atoms.py
+@@ -76,7 +76,7 @@ def test_set1():
+     assert atom[1] == Atom("Au")
+ 
+ 
+-@pytest.mark.filterwarnings("ignore", message="*Replacing atom")
++@pytest.mark.filterwarnings("ignore:.*Replacing atom")
+ def test_set2():
+     # Add new atoms to the set
+     atom = Atoms(["C", "C"])
+@@ -111,8 +111,8 @@ def test_set3():
+     assert len(atom.atom) == 2
+ 
+ 
+-@pytest.mark.filterwarnings("ignore", message="*Substituting atom")
+-@pytest.mark.filterwarnings("ignore", message="*Replacing atom")
++@pytest.mark.filterwarnings("ignore:.*Substituting atom")
++@pytest.mark.filterwarnings("ignore:.*Replacing atom")
+ def test_replace2():
+     # Add new atoms to the set
+     atom = Atoms(["C"] * 10 + ["B"] * 2)
+diff --git a/src/sisl/conftest.py b/src/sisl/conftest.py
+index f964f37d0..e54beec90 100644
+--- a/src/sisl/conftest.py
++++ b/src/sisl/conftest.py
+@@ -6,8 +6,11 @@ from __future__ import annotations
+ """ Global sisl fixtures """
+ import logging
+ import os
++import re
++import warnings
+ from functools import cache, partial
+ from importlib import import_module
++from itertools import count
+ from pathlib import Path
+ 
+ import numpy as np
+@@ -68,8 +71,12 @@ def sisl_tmp(request, tmp_path_factory):
+         sisl_tmp.file(file, dir_name='sisl')
+         sisl_tmp.dir('sisl')
+ 
++    Each test has its own folder, ``<basetemp>/<package>/<test-name><N>``.
++    Another `dir_name` is a sub-folder of it.
+     The scope of the `sisl_tmp` fixture is at a function level to
+     clean up after each function.
++    A path that cannot be removed (e.g. a file that is still open on Windows)
++    emits a `UserWarning`.
+     """
+     global __file__
+     # The test file is in a tests/test_<name>.py,
+@@ -84,58 +91,62 @@ def sisl_tmp(request, tmp_path_factory):
+ 
+     class FileFactory:
+         def __init__(self):
+-            self.base = tmp_path_factory.getbasetemp()
+-            self.dirs = [self.base]
+-            self.files = []
++            self.package = tmp_path_factory.getbasetemp() / path.replace(
++                os.path.sep, "-"
++            )
++            self.package.mkdir(exist_ok=True)
++            name = re.sub(r"\W", "_", request.node.name)[:30]
++            for n in count():
++                self.root = self.package / f"{name}{n}"
++                try:
++                    self.root.mkdir()
++                    break
++                except FileExistsError:
++                    pass
++            self.dirs = []
+ 
+         def dir(self, name=path):
+-            # Make name a path
+-            D = Path(name.replace(os.path.sep, "-"))
+-            if not (self.base / D).is_dir():
+-                # tmp_path_factory.mktemp returns pathlib.Path
+-                self.dirs.append(tmp_path_factory.mktemp(str(D), numbered=False))
+-
+-            return self.dirs[-1]
++            if name == path:
++                D = self.root
++            else:
++                D = self.root / name.replace(os.path.sep, "-")
++            if D not in self.dirs:
++                D.mkdir(exist_ok=True)
++                self.dirs.append(D)
++            return D
+ 
+         def file(self, name, dir_name=path):
+-            # self.base *is* a pathlib
+-            D = self.base / dir_name.replace(os.path.sep, "-")
+-            if D in self.dirs:
+-                i = self.dirs.index(D)
+-            else:
+-                self.dir(dir_name)
+-                i = -1
+-            self.files.append(self.dirs[i] / name)
+-            return str(self.files[-1])
++            return str(self.dir(dir_name) / name)
+ 
+         def getbase(self):
+-            return self.dirs[-1]
++            return self.dirs[-1] if self.dirs else self.dir()
+ 
+         def __call__(self, name, dir_name=path):
+             """Shorthand for self.file"""
+             return self.file(name, dir_name)
+ 
+         def teardown(self):
+-            while len(self.files) > 0:
+-                # Do each removal separately
+-                f = self.files.pop()
+-                if f.is_file():
+-                    try:
+-                        f.close()
+-                    except Exception:
+-                        pass
+-                    try:
+-                        f.unlink()
+-                    except Exception:
+-                        pass
+-            while len(self.dirs) > 0:
+-                # Do each removal separately (from back of directory)
+-                d = self.dirs.pop()
+-                if d.is_dir():
+-                    try:
+-                        d.rmdir()
+-                    except Exception:
+-                        pass
++            failed = []
++            # reverse order removes children before their parent
++            for p in sorted(self.root.rglob("*"), reverse=True) + [self.root]:
++                try:
++                    if p.is_dir() and not p.is_symlink():
++                        p.rmdir()
++                    else:
++                        p.unlink()
++                except OSError:
++                    failed.append(p)
++            try:
++                # other tests can still have folders here
++                self.package.rmdir()
++            except OSError:
++                pass
++            # a folder fails when a file in it fails, so report only the files
++            failed = [p for p in failed if not p.is_dir()] or failed
++            if failed:
++                warnings.warn(
++                    f"sisl_tmp could not remove (still open?): {', '.join(map(str, failed))}"
++                )
+ 
+     ff = FileFactory()
+     request.addfinalizer(ff.teardown)
+diff --git a/src/sisl/geom/tests/test_geom.py b/src/sisl/geom/tests/test_geom.py
+index 7422963e6..2eb986fd8 100644
+--- a/src/sisl/geom/tests/test_geom.py
++++ b/src/sisl/geom/tests/test_geom.py
+@@ -55,7 +55,7 @@ def test_basic():
+ 
+ @pytest.mark.parametrize(
+     "func, orthogonal, vacuum",
+-    itertools.product([graphene, goldene], [True, False], [10, 20]),
++    list(itertools.product([graphene, goldene], [True, False], [10, 20])),
+ )
+ def test_flat(func, orthogonal, vacuum):
+     a = func(orthogonal=orthogonal, vacuum=vacuum)
+@@ -225,7 +225,7 @@ def test_cgnr(vacuum):
+ 
+ @pytest.mark.parametrize(
+     "W, invert_first",
+-    itertools.product(range(3, 20), [True, False]),
++    list(itertools.product(range(3, 20), [True, False])),
+ )
+ def test_heteroribbon_one_unit(W, invert_first):
+     # Check that all ribbon widths are properly cut into one unit
+diff --git a/src/sisl/io/_help.py b/src/sisl/io/_help.py
+index 53a643c80..0ae159385 100644
+--- a/src/sisl/io/_help.py
++++ b/src/sisl/io/_help.py
+@@ -161,7 +161,6 @@ def _fill_basis_empty(sp: np.ndarray, basis: list[Atom], start_Z=1000) -> Atoms:
+         # Hence we extract the species list, and specifies
+         # it as the *only* basis option.
+         only_basis = True
+-        n_species = max(n_species, len(basis.atom))
+         basis = basis.atom
+     else:
+         # it *can* be the correct basis, in case there are more basis
+diff --git a/src/sisl/io/siesta/tests/test_fdf.py b/src/sisl/io/siesta/tests/test_fdf.py
+index 3fc549cac..73aafc027 100644
+--- a/src/sisl/io/siesta/tests/test_fdf.py
++++ b/src/sisl/io/siesta/tests/test_fdf.py
+@@ -18,7 +18,7 @@ pytestmark = [
+     pytest.mark.io,
+     pytest.mark.siesta,
+     pytest.mark.fdf,
+-    pytest.mark.filterwarnings("ignore", message="*number of supercells"),
++    pytest.mark.filterwarnings("ignore:.*number of supercells"),
+ ]
+ 
+ 
+@@ -417,6 +417,7 @@ def test_dry_read(sisl_tmp):
+         "grid": dict(name="rho"),
+     }
+ 
++    assert np.allclose(fdf.read_lattice_nsc(), (1, 1, 1))
+     with pytest.warns(SislWarning):
+         assert np.allclose(fdf.read_lattice_nsc(), (1, 1, 1))
+     read_methods.remove("read_lattice_nsc")
+diff --git a/src/sisl/io/siesta/tests/test_siesta.py b/src/sisl/io/siesta/tests/test_siesta.py
+index b76f8259b..086c208a8 100644
+--- a/src/sisl/io/siesta/tests/test_siesta.py
++++ b/src/sisl/io/siesta/tests/test_siesta.py
+@@ -164,7 +164,7 @@ def test_nc_density_matrix(sisl_tmp, sisl_system):
+     assert sisl_system.g.atoms.equal(ndm.atoms, R=False)
+ 
+ 
+-@pytest.mark.filterwarnings("ignore", message="*is NOT Hermitian for on-site")
++@pytest.mark.filterwarnings("ignore:.*is NOT Hermitian for on-site")
+ @sisl_requires("sisl.io.siesta._siesta")
+ def test_nc_H_spin_orbit_nc2tshs2nc(sisl_tmp):
+     H1 = Hamiltonian(sisl.geom.graphene(), spin=sisl.Spin("SO"))
+@@ -193,7 +193,7 @@ def test_nc_H_spin_orbit_nc2tshs2nc(sisl_tmp):
+     assert np.allclose(H1._csr._D, H3._csr._D)
+ 
+ 
+-@pytest.mark.filterwarnings("ignore", message="*is NOT Hermitian for on-site")
++@pytest.mark.filterwarnings("ignore:.*is NOT Hermitian for on-site")
+ @sisl_requires("sisl.io.siesta._siesta")
+ def test_nc_DM_spin_orbit_nc2dm2nc(sisl_tmp):
+     DM1 = DensityMatrix(sisl.geom.graphene(), orthogonal=False, spin=sisl.Spin("SO"))
+diff --git a/src/sisl/physics/tests/test_density_matrix.py b/src/sisl/physics/tests/test_density_matrix.py
+index f48a04a5b..e69a8cd46 100644
+--- a/src/sisl/physics/tests/test_density_matrix.py
++++ b/src/sisl/physics/tests/test_density_matrix.py
+@@ -202,7 +202,7 @@ class TestDensityMatrix:
+         D.density(grid, method=density_method)
+ 
+     @pytest.mark.slow
+-    @pytest.mark.filterwarnings("ignore", message="*non-Hermitian on-site")
++    @pytest.mark.filterwarnings("ignore:.*non-Hermitian on-site")
+     def test_rho2(self, density_method):
+         bond = 1.42
+         sq3h = 3.0**0.5 * 0.5
+@@ -262,7 +262,7 @@ class TestDensityMatrix:
+         D.density(grid, Spin.Y, method=density_method)
+         D.density(grid, Spin.Z, method=density_method)
+ 
+-    @pytest.mark.filterwarnings("ignore", message="*non-Hermitian on-site")
++    @pytest.mark.filterwarnings("ignore:.*non-Hermitian on-site")
+     def test_orbital_momentum(self):
+         bond = 1.42
+         sq3h = 3.0**0.5 * 0.5
+@@ -356,7 +356,7 @@ class TestDensityMatrix:
+         assert not np.allclose(D_mull, d_mull)
+         assert np.allclose(D_mull[0], d_mull[0])
+ 
+-    @pytest.mark.filterwarnings("ignore", message="*non-Hermitian on-site")
++    @pytest.mark.filterwarnings("ignore:.*non-Hermitian on-site")
+     def test_spin_align_so(self):
+         bond = 1.42
+         sq3h = 3.0**0.5 * 0.5
+@@ -512,7 +512,7 @@ class TestDensityMatrix:
+         d_mull = d.mulliken()
+         assert not np.allclose(D_mull, d_mull)
+ 
+-    @pytest.mark.filterwarnings("ignore", message="*non-Hermitian on-site")
++    @pytest.mark.filterwarnings("ignore:.*non-Hermitian on-site")
+     def test_spin_rotate_so(self):
+         bond = 1.42
+         sq3h = 3.0**0.5 * 0.5
+diff --git a/src/sisl/physics/tests/test_self_energy.py b/src/sisl/physics/tests/test_self_energy.py
+index 190022e12..f0aaf3888 100644
+--- a/src/sisl/physics/tests/test_self_energy.py
++++ b/src/sisl/physics/tests/test_self_energy.py
+@@ -5,7 +5,6 @@ from __future__ import annotations
+ 
+ import numpy as np
+ import pytest
+-from scipy.sparse import SparseEfficiencyWarning
+ 
+ import sisl
+ from sisl import (
+@@ -27,7 +26,7 @@ from sisl import (
+ pytestmark = [
+     pytest.mark.physics,
+     pytest.mark.self_energy,
+-    pytest.mark.filterwarnings("ignore", category=SparseEfficiencyWarning),
++    pytest.mark.filterwarnings("ignore::scipy.sparse.SparseEfficiencyWarning"),
+ ]
+ 
+ 
+diff --git a/src/sisl/viz/plotters/tests/test_matrix.py b/src/sisl/viz/plotters/tests/test_matrix.py
+index f597aab41..2379870d8 100644
+--- a/src/sisl/viz/plotters/tests/test_matrix.py
++++ b/src/sisl/viz/plotters/tests/test_matrix.py
+@@ -31,7 +31,7 @@ def test_draw_matrix_separators_empty():
+ 
+ @pytest.mark.parametrize(
+     "draw_supercells,separator_mode",
+-    itertools.product([True, False], ["atoms", "orbitals", "supercells"]),
++    list(itertools.product([True, False], ["atoms", "orbitals", "supercells"])),
+ )
+ def test_draw_matrix_separators(draw_supercells, separator_mode):
+     C = sisl.Atom(
+diff --git a/techs/11-testing.md b/techs/11-testing.md
+index 5842e34b4..c6ccc9d81 100644
+--- a/techs/11-testing.md
++++ b/techs/11-testing.md
+@@ -63,6 +63,21 @@ pytestmark = sisl_requires("netCDF4")
+ - A test that uses a Fortran Sile without `sisl_requires` becomes `xfail`
+   when the Fortran sources are not built. See [50 · Siesta and Fortran](50-io.md#siesta-and-fortran).
+ 
++## Temporary files
++
++Use the fixture `sisl_tmp` for files that a test writes.
++Each test gets its own folder: `<basetemp>/<package>/<test-name><N>`, for example
++`sisl-io-siesta/test_geom_order0`.
++
++- Do not share a folder between tests. Many readers also read other files in the same folder.
++  For example, `fdfSileSiesta.read_basis` reads `siesta.nc` first, if it exists.
++  A file from a different test then changes the result.
++- On Windows, a file that is open cannot be removed.
++  Thus a file handle that is not closed leaves the file in the folder.
++- The teardown removes the folder of the test.
++  If it cannot remove a file, it emits a `UserWarning` with the file name.
++  Do not ignore this warning. It shows a file handle that is not closed.
++
+ ## Parallelism
+ 
+ Set `SISL_NUM_PROCS=1` when you debug. This stops the parallel execution.

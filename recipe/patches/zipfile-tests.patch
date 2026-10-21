@@ -1,0 +1,33 @@
+diff --git a/src/sisl/_core/geometry.py b/src/sisl/_core/geometry.py
+index 817b30355..eb03b9882 100644
+--- a/src/sisl/_core/geometry.py
++++ b/src/sisl/_core/geometry.py
+@@ -3677,7 +3677,7 @@ class Geometry(
+                 def func(lst):
+                     # We don't need keepdims=False, because an array of size 1
+                     # can be broadcasted to a single element.
+-                    return mode(lst)[0]
++                    return mode(lst, keepdims=True)[0]
+ 
+             else:
+                 try:
+diff --git a/src/sisl/io/tests/test_zipfile.py b/src/sisl/io/tests/test_zipfile.py
+index e078c763e..bc59e506b 100644
+--- a/src/sisl/io/tests/test_zipfile.py
++++ b/src/sisl/io/tests/test_zipfile.py
+@@ -9,6 +9,7 @@ import numpy as np
+ import pytest
+ 
+ import sisl
++from sisl.conftest import sisl_requires
+ from sisl.io._zipfile import ZipPath
+ 
+ 
+@@ -78,6 +79,7 @@ def test_zipfile_write_read(external_zip: bool, specify_class: bool):
+     assert np.allclose(read_geometry.cell, geometry.cell)
+ 
+ 
++@sisl_requires("sisl.io.siesta._siesta")
+ @pytest.mark.parametrize("external_zip", [True, False])
+ @pytest.mark.parametrize("from_fdf", [True, False])
+ def test_zipfile_write_read_binary(external_zip: bool, from_fdf: bool):

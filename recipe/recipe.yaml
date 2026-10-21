@@ -1,8 +1,8 @@
 context:
-  python_min: "3.10"
+  python_min: "3.11"
   name: "sisl"
-  version: "0.16.4"
-  sha256: "244894e091c49c702d85a7f6c5836a20ef3affa6f3618fc6589ce36e6d838669"
+  version: "0.20.0"
+  sha256: "69a175498d0f942608b646e6fe6c1f01ddc13954c85945a6e8534023e7883970"
 
 package:
   name: ${{ name }}
@@ -11,12 +11,17 @@ package:
 source:
   url: https://github.com/zerothi/${{ name }}/archive/v${{ version }}.tar.gz
   sha256: ${{ sha256 }}
+  patches:
+    - patches/nofortran-tests.patch
+    - patches/zipfile-tests.patch
+    - patches/green-tests.patch
+    - patches/sisl-tmp-tests.patch
+    - patches/xfail-tests.patch
 
 build:
-  number: 1
+  number: 0
   skip:
     - match(python, "<${{ python_min }}")
-    - win
 
 requirements:
   build:
@@ -35,7 +40,7 @@ requirements:
         - python
         - cross-python_${{ host_platform }}
         - cython >=3.0.8
-        - numpy >=2.0.0rc1
+        - numpy >=2.1.0
   host:
     - libblas
     - libcblas
@@ -44,17 +49,17 @@ requirements:
     - pip
     - pyproject-metadata
     - setuptools_scm >=8
-    - scikit-build-core >=0.8
+    - scikit-build-core >=1
     - cython >=3.0.8
     # a build problem occurs with 1.22.* (infinite recursion on module creation)
-    - numpy >=2.0.0rc1
+    - numpy >=2.1.0
   run:
     - python
     - pyparsing >=2.2.1
-    - numpy >=1.21
-    - scipy >=1.6
+    - numpy >=2.1.0
+    - scipy >=1.15
     - tqdm >=4.36
-    - xarray >=0.21
+    - xarray >=2024.3
     - netcdf4
   run_constraints:
     - dill >=0.3.2
@@ -64,7 +69,6 @@ tests:
       imports:
         - sisl
         - sisl.io
-        - sisl.io.siesta._siesta
         - sisl.geom
         - sisl.linalg
         - sisl.mixing
@@ -72,17 +76,22 @@ tests:
         - sisl.shape
         - sisl.unit
         - sisl.utils
+        - sisl_toolbox.btd
+        # We currently don't support fortran on windows
+        - if: not win
+          then: sisl.io.siesta._siesta
       pip_check: true
-  - requirements:
+
+  - script:
+     - pytest . -m "not slow" --timeout=60 --capture=tee-sys -v
+    requirements:
       run:
-        - pip
         - pytest
+        - pytest-timeout
         - matplotlib
         - nodify
         - plotly
         - scikit-image
-    script:
-      - pytest . -m "not slow"
 
 about:
   license: MPL-2.0
