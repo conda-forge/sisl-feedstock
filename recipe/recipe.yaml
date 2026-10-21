@@ -80,7 +80,8 @@ tests:
       pip_check: true
 
   - script:
-      - pytest . -m "not slow" --timeout=60 --capture=tee-sys -v
+    content: |
+      pytest . -m "not slow" --timeout=60 --capture=tee-sys -v
     env:
       PYTHONUNBUFFERED: 1
     requirements:
